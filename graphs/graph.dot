@@ -1,5 +1,5 @@
 digraph G {
-	layout=circo
+	layout=sfdp
 	0 -> 6418;
 	1 -> 6259;
 	1 -> 9862;
