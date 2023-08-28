@@ -1,5 +1,8 @@
 {
     "files.associations": {
-        "vector.h": "c"
+        "vector.h": "c",
+        "*.tcc": "c",
+        "string": "c",
+        "string_view": "c"
     }
 }
