@@ -2,8 +2,10 @@
 #define _READ_FILE_H_
 
 
-#include "../adjacency_list/graph.h"
+#include "../adjacency_list_2/graph.h"
 #include <time.h>
+#include <stdbool.h>
+#include <stdio.h>
 
 
 // Read a graph from a file

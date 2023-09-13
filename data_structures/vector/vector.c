@@ -3,12 +3,12 @@
 
 #define INITIAL_SIZE 2
 
-Vector *vector_construct(compare_fn compare) {
+Vector *vector_construct(int initial_size, compare_fn compare) {
     Vector* v = malloc(sizeof(Vector));
     v->compare = compare;
     v->size = 0;
-    v->allocated = INITIAL_SIZE;
-    v->data = malloc(sizeof(data_type) * INITIAL_SIZE);
+    v->allocated = initial_size;
+    v->data = malloc(sizeof(data_type) * initial_size);
     return v;
 }
 
@@ -29,6 +29,7 @@ void vector_push_back(Vector *v, data_type val) {
 data_type vector_get(Vector *v, int i) {
     return v->data[i];
 }
+
 void vector_set(Vector *v, int i, data_type val) {
     v->data[i] = val;
 }

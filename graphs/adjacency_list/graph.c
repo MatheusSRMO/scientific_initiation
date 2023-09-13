@@ -57,29 +57,20 @@ int edge_compare(data_type a, data_type b) {
 }
 
 
-Graph* graph_construct() {    
+Graph* graph_construct(int V, int E) {    
     Graph* graph = malloc(sizeof(Graph));
-    graph->V = 0;
-    graph->E = 0;
-    graph->vertices = vector_construct(vertex_compare);
+    graph->V = V;
+    graph->E = E;
+    graph->vertices = vector_construct(V, vertex_compare);
     return graph;
 }
 
-void graph_add_vertex(Graph* graph, int data) {
-    // Verifica se o vértice já existe
-    for(int i = 0; i < graph->V; i++) {
-        Vertex* vertex = vector_get(graph->vertices, i);
-        if(vertex->data == data) {
-            return;
-        }
-    }
-    
+void graph_add_vertex(Graph* graph, int data) {   
     Vertex* vertex = malloc(sizeof(Vertex));
     vertex->data = data;
-    vertex->outgoing_edges = vector_construct(edge_compare);
-    vertex->incoming_edges = vector_construct(edge_compare);
+    vertex->outgoing_edges = vector_construct(graph->E, edge_compare);
+    vertex->incoming_edges = vector_construct(graph->E, edge_compare);
     vector_push_back(graph->vertices, vertex);
-    graph->V++;
 }
 
 void graph_add_edge(Graph* graph, int data1, int data2) {
@@ -101,7 +92,6 @@ void graph_add_edge(Graph* graph, int data1, int data2) {
     edge->to_vertex = v2;
     vector_push_back(v1->outgoing_edges, edge);
     vector_push_back(v2->incoming_edges, edge);
-    graph->E++;
 }
 
 int graph_vertex_count(Graph* graph) {
@@ -143,5 +133,3 @@ void graph_destruct(Graph* graph) {
     vector_destroy(graph->vertices);
     free(graph);
 }
-
-

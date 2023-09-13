@@ -14,7 +14,7 @@ typedef struct {
 } Vector;
 
 // Cria um vetor vazio
-Vector *vector_construct(compare_fn compare);
+Vector *vector_construct(int initial_size, compare_fn compare);
 
 // Adiciona um elemento no final do vetor
 void vector_push_back(Vector *v, data_type val);

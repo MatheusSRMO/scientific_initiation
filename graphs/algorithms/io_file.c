@@ -7,18 +7,17 @@ Graph* read_file(char* file_name) {
         exit(1);
     }
 
-    Graph* graph = graph_construct();
 
     int V, E;
     fscanf(file, "%d %d", &V, &E);
+
+    Graph* graph = graph_construct(V, E, true);
 
     int i = 0;
     while(i++ < E) {
         int data1, data2;
         fscanf(file, "%d %d", &data1, &data2);
-        graph_add_vertex(graph, data1);
-        graph_add_vertex(graph, data2);
-        graph_add_edge(graph, data1, data2);
+        graph_add_edge(graph, data1, data2 - data1, data2);
     }
 
     fclose(file);
@@ -32,16 +31,17 @@ Graph* generate_random_graph(int n, int m) {
     // seed the random number generator
 
 
-    Graph* graph = graph_construct();
+    Graph* graph = graph_construct(n, m, true);
 
-    for(int i = 0; i < n; i++) {
-        graph_add_vertex(graph, i);
-    }
+    // for(int i = 0; i < n; i++) {
+    //     graph_add_vertex(graph, i);
+    // }
 
     for(int i = 0; i < m; i++) {
-        int data1 = rand() % n;
-        int data2 = rand() % n;
-        graph_add_edge(graph, data1, data2);
+        int src = rand() % n;
+        int dest = rand() % n;
+        int weight = rand() % 100;
+        graph_add_edge(graph, src, weight, dest);
     }
 
     return graph;
@@ -58,22 +58,15 @@ void generate_graphviz_file(Graph* graph, char* file_name) {
 
     fprintf(file, "\tlayout=sfdp\n");
 
-    int V = graph_vertex_count(graph);
-    Vector *vertices = graph_get_vertices(graph);
+    int V = graph->V;
     
 
     for(int i = 0; i < V; i++) {
         
-        Vertex* vertex = vector_get(vertices, i);
-
-        Vector* outgoing_edges = vertex_get_outgoing_edges(vertex);
-
-        for(int j = 0; j < vector_size(outgoing_edges); j++) {
-            Edge* edge = vector_get(outgoing_edges, j);
-
-            int to = edge_get_to_vertex(edge);
-            
-            fprintf(file, "\t%d -> %d;\n", vertex_get_data(vertex), to);
+        Edge* current = graph->adj[i];
+        while(current != NULL) {
+            fprintf(file, "\t%d -> %d [label=\"%.2f\"];\n", i, current->target, current->weight);
+            current = current->next;
         }
     }
 

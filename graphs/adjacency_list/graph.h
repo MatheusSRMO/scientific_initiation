@@ -23,7 +23,7 @@ float edge_get_weight(Edge* edge);
 
 /// @brief  Cria um grafo
 /// @return Ponteiro para o grafo criado
-Graph* graph_construct();
+Graph* graph_construct(int V, int E);
 
 /// @brief Adiciona um vértice no grafo
 /// @param graph Ponteiro para o grafo

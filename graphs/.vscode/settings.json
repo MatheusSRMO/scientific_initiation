@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "graph.h": "c",
+        "io_file.h": "c",
+        "stdbool.h": "c"
+    },
+    "C_Cpp.errorSquiggles": "disabled"
+}
