@@ -1,2 +1,5 @@
-main.py
 **/main
+*.dot
+*.tsp
+**/*.zip
+*/venv
