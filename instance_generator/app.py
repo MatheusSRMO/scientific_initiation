@@ -3,6 +3,7 @@ import math
 import numpy as np
 import osmnx as ox
 import matplotlib.pyplot as plt
+from matplotlib.patches import Circle
 
 
 def convert_geographic_to_cartesian_vitoria(latitude, longitude):
@@ -154,8 +155,9 @@ def plot_graph_and_buildings_original(coords_buildings, graph):
     fig, ax = plt.subplots()
     coords_buildings_array = np.array(coords_buildings)
     ax.scatter(coords_buildings_array[:, 0], coords_buildings_array[:, 1], c='r', s=1)
+
     ox.plot_graph(graph, ax=ax, node_color='g', edge_color='gray', node_size=7)
-    
+
     plt.show()
 
 def write_tsp_file(place_name, coords_nodes, coords_buildings):
@@ -221,13 +223,97 @@ def write_dot_file(place_name, graph):
     with open(f'outputs/dot/{formatted_place_name}.dot', 'w') as file:
         file.write('strict graph {\n')
 
+        map_node_id_to_index = {}
+        k = 1
         for node in graph.nodes(data=True):
             latitude, longitude = convert_geographic_to_cartesian_vitoria(node[1]["y"], node[1]["x"])
-            file.write(f'{node[0]} [pos="{latitude},{longitude}!"];\n')
+            file.write(f'{k} [pos="{latitude},{longitude}!"];\n')
+            map_node_id_to_index[node[0]] = k
+            k += 1
+        
         for edge in graph.edges():
-            file.write(f'{edge[0]} -- {edge[1]};\n')
+            id1 = map_node_id_to_index[edge[0]]
+            id2 = map_node_id_to_index[edge[1]]
+            file.write(f'{id1} -- {id2};\n')
 
         file.write('}')
+
+def write_scp_file(plane_name, graph, coords_nodes, coords_buildings):
+    """
+    Writes the .scp file containing coordinates for nodes and buildings.
+
+    Args:
+        place_name (str): The name of the place.
+        coords_nodes (list of tuple): Transformed coordinates (x, y) for graph nodes.
+        coords_buildings (list of tuple): Building centroid coordinates (x, y).
+    """
+    """
+        Format:
+        NAME: <string>
+        TYPE: SCP
+        COMMENT: <string>
+        DIMENSION: <int>
+        EDGES_DIMENSION: <int>
+        CONSTRUCTIONS_DIMENSION: <int>
+        EDGE_WEIGHT_TYPE: EUC_2D
+        NODE_COORD_SECTION
+        <int> <float> <float>
+        <int> <float> <float>
+        ...
+        <int> <float> <float>
+        EDGES_SECTION
+        <int> <int>
+        <int> <int>
+        ...
+        <int> <int>
+        CONSTRUCTIONS_SECTION // id, x, y
+        <int> <float> <float>
+        <int> <float> <float>
+        ...
+        <int> <float> <float>
+    """
+    formatted_place_name = format_place_name(place_name)
+
+    with open(f'outputs/scp/{formatted_place_name}.scp', 'w') as file:
+        file.write(f'NAME: {place_name}\n')
+        file.write('TYPE: SCP\n')
+        file.write('COMMENT: \n')
+        dimension = len(coords_nodes)
+        file.write('DIMENSION: ' + str(dimension) + '\n')
+        edges_dimension = len(graph.edges())
+        file.write('EDGES_DIMENSION: ' + str(edges_dimension) + '\n')
+        file.write('CONSTRUCTIONS_DIMENSION: ' + str(len(coords_buildings)) + '\n')
+        file.write('EDGE_WEIGHT_TYPE: EUC_2D\n')
+        file.write('NODE_COORD_SECTION\n')
+        
+        map_node_id_to_index = {}
+        k = 1
+        for node in graph.nodes(data=True):
+            latitude, longitude = convert_geographic_to_cartesian_vitoria(node[1]["y"], node[1]["x"])
+            file.write(f'{k} {latitude} {longitude}\n')
+            map_node_id_to_index[node[0]] = k
+            k += 1
+
+        file.write('EDGES_SECTION\n')
+
+        for edge in graph.edges():
+            id1 = map_node_id_to_index[edge[0]]
+            id2 = map_node_id_to_index[edge[1]]
+            file.write(f'{id1} {id2}\n')
+
+        file.write('CONSTRUCTIONS_SECTION\n')
+
+        for i in range(len(coords_buildings)):
+            file.write(
+                str(i + 1) +
+                ' ' +
+                str(coords_buildings[i][0]) +
+                ' ' +
+                str(coords_buildings[i][1]) +
+                '\n'
+            )
+
+        file.write('EOF\n')
 
 
 if __name__ == '__main__':
@@ -254,3 +340,4 @@ if __name__ == '__main__':
     # Write the .tsp and .dot files
     # write_tsp_file(place_name, transformed_graph_nodes, transformed_building_centroids)
     write_dot_file(place_name, graph)
+    write_scp_file(place_name, graph, transformed_graph_nodes, transformed_building_centroids)
