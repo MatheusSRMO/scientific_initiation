@@ -3,12 +3,31 @@ import math
 import numpy as np
 import osmnx as ox
 import matplotlib.pyplot as plt
-from matplotlib.patches import Circle
 
 
-def convert_geographic_to_cartesian_vitoria(latitude, longitude):
+CONST_REDUCTION_FACTOR = 16 # for graphviz compression
+
+
+def get_geographic_coordinates_from_place_name(graph):
     """
-    Converts geographic coordinates to cartesian coordinates in the Vitoria projection.
+    Gets the geographic coordinates (latitude and longitude) from a place name.
+
+    Args:
+        place_name (str): The place name to get the coordinates from.
+
+    Returns:
+        tuple: A tuple containing the geographic coordinates (latitude, longitude).
+    """
+    
+    # Obtem as cordenadas do nó mais a sudoeste do grafo
+    min_latitude = min([node[1]['y'] for node in graph.nodes(data=True)])
+    min_longitude = min([node[1]['x'] for node in graph.nodes(data=True)])
+    
+    return min_latitude, min_longitude
+
+def convert_geographic_to_cartesian_vitoria(graph, latitude, longitude):
+    """
+    Converts geographic coordinates to cartesian coordinates in the place_name projection.
 
     Args:
         latitude (float): The latitude in degrees.
@@ -17,16 +36,15 @@ def convert_geographic_to_cartesian_vitoria(latitude, longitude):
     Returns:
         tuple: A tuple containing the cartesian coordinates (x, y).
     """
-    latitude_vitoria = -20.3155  # Latitude de Vitória
-    longitude_vitoria = -40.3128  # Longitude de Vitória
-
+    latitude_reference, longitude_reference = get_geographic_coordinates_from_place_name(graph)
+    
     lat_rad = math.radians(latitude)
     lon_rad = math.radians(longitude)
-    lat_vitoria_rad = math.radians(latitude_vitoria)
-    lon_vitoria_rad = math.radians(longitude_vitoria)
+    lat_vitoria_rad = math.radians(latitude_reference)
+    lon_vitoria_rad = math.radians(longitude_reference)
 
-    x = (lon_rad - lon_vitoria_rad) * 6378137.0 / 16 * math.cos(lat_vitoria_rad)
-    y = (lat_rad - lat_vitoria_rad) * 6378137.0 / 16 * math.cos(lat_vitoria_rad)
+    x = (lon_rad - lon_vitoria_rad) * 6378137.0
+    y = (lat_rad - lat_vitoria_rad) * 6378137.0
 
     return x, y
 
@@ -77,7 +95,9 @@ def fetch_graph_for_location(place_name):
     Returns:
         networkx.MultiDiGraph: The road network graph.
     """
-    return ox.graph_from_place(place_name, network_type='all_private')
+    return ox.graph_from_place(
+        place_name, network_type='drive_service', simplify=True, truncate_by_edge=True
+    )
 
 def fetch_building_geometries(place_name):
     """
@@ -105,7 +125,7 @@ def extract_centroids_from_geometries(geometries):
     geometries['centroid'] = geometries['geometry'].centroid
     return [(geom.x, geom.y) for geom in geometries['centroid']]
 
-def transform_coordinates_to_first_quadrant(coords):
+def transform_coordinates_to_first_quadrant(graph, coords):
     """
     Transforms coordinates to the first quadrant.
 
@@ -115,7 +135,7 @@ def transform_coordinates_to_first_quadrant(coords):
     Returns:
         list of tuple: Transformed coordinates (x, y).
     """
-    return [convert_geographic_to_cartesian_vitoria(coord[1], coord[0]) for coord in coords]
+    return [convert_geographic_to_cartesian_vitoria(graph, coord[1], coord[0]) for coord in coords]
 
 def transform_graph_coordinates(graph):
     """
@@ -127,7 +147,7 @@ def transform_graph_coordinates(graph):
     Returns:
         list of tuple: Transformed coordinates (x, y) for graph nodes.
     """
-    return [convert_geographic_to_cartesian_vitoria(node[1]['y'], node[1]['x']) for node in graph.nodes(data=True)]
+    return [convert_geographic_to_cartesian_vitoria(graph, node[1]['y'], node[1]['x']) for node in graph.nodes(data=True)]
 
 def plot_graph_and_buildings(coords_buildings, coords_nodes):
     """
@@ -226,8 +246,11 @@ def write_dot_file(place_name, graph):
         map_node_id_to_index = {}
         k = 1
         for node in graph.nodes(data=True):
-            latitude, longitude = convert_geographic_to_cartesian_vitoria(node[1]["y"], node[1]["x"])
-            file.write(f'{k} [pos="{latitude},{longitude}!"];\n')
+            latitude, longitude = convert_geographic_to_cartesian_vitoria(graph, node[1]["y"], node[1]["x"])
+            latitude /= CONST_REDUCTION_FACTOR
+            longitude /= CONST_REDUCTION_FACTOR
+            # Escreve os nós do grafo em verde escuro, texto branco, com o um circulo de raio 0.05 em volta do nó
+            file.write(f'{k} [pos="{latitude},{longitude}!", color="#006400", fontcolor="#FFFFFF", style=filled, fillcolor="#006400", shape=circle, width=0.005, height=0.005];\n')
             map_node_id_to_index[node[0]] = k
             k += 1
         
@@ -238,7 +261,7 @@ def write_dot_file(place_name, graph):
 
         file.write('}')
 
-def write_scp_file(plane_name, graph, coords_nodes, coords_buildings):
+def write_scp_file(place_name, graph, coords_nodes, coords_buildings):
     """
     Writes the .scp file containing coordinates for nodes and buildings.
 
@@ -289,7 +312,7 @@ def write_scp_file(plane_name, graph, coords_nodes, coords_buildings):
         map_node_id_to_index = {}
         k = 1
         for node in graph.nodes(data=True):
-            latitude, longitude = convert_geographic_to_cartesian_vitoria(node[1]["y"], node[1]["x"])
+            latitude, longitude = convert_geographic_to_cartesian_vitoria(graph, node[1]["y"], node[1]["x"])
             file.write(f'{k} {latitude} {longitude}\n')
             map_node_id_to_index[node[0]] = k
             k += 1
@@ -329,7 +352,7 @@ if __name__ == '__main__':
     building_centroids = extract_centroids_from_geometries(buildings)
 
     # Transform coordinates to the first quadrant
-    transformed_building_centroids = transform_coordinates_to_first_quadrant(building_centroids)
+    transformed_building_centroids = transform_coordinates_to_first_quadrant(graph, building_centroids)
 
     # Transform the coordinates of graph nodes
     transformed_graph_nodes = transform_graph_coordinates(graph)
