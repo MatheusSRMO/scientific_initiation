@@ -3,3 +3,4 @@
 *.tsp
 **/*.zip
 */venv
+*.txt
