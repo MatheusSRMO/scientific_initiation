@@ -3,42 +3,33 @@
 #include <string.h>
 #include <math.h>
 #include "file_handler/file_handler.h"
-#include "file_handler/scp/scp.h"
-#include "file_handler/vrp/vrp.h"
 #include "graph/graph.h"
 #include "edge_list/edge_list.h"
-
+#include "kruskal/kruskal.h"
 
 int main() {
-    FileHandler *file_handler = file_handler_create(
-        "text.scp",
-        "r",
-        scp_file_reader,
-        scp_file_data_to_edge_list,
-        scp_file_writer,
-        scp_file_destructor,
-        scp_file_get_dimension,
-        scp_file_get_edges_dimension
-    );
+    FileHandler *file_handler = file_handler_create("exemplos/in/berlin52.tsp", tsp);
 
-    file_handler_read_data(file_handler);
+    // file_handler_print(file_handler);
 
-    int dimension = file_handler_get_dimension(file_handler);
-    printf("Dimension: %d\n", dimension);
     int edges_dimension = file_handler_get_edges_dimension(file_handler);
+    printf("Dimension: %d\n", edges_dimension);
+
     EdgeList *edge_list = edge_list_create(edges_dimension);
 
-    file_handler_data_to_edge_list(file_handler, edge_list);
+    file_handler_to_edge_list(file_handler, edge_list);
 
-    // edge_list_print(edge_list);
+    edge_list_sort(edge_list);
 
-    Graph *graph = graph_create(dimension, adj_list);
 
-    graph_of_edge_list(graph, edge_list);
+    EdgeList* mst_list = kruskal(edge_list, edges_dimension);
 
-    // graph_print(graph);
+    edge_list_print(mst_list);
+    file_handler_write_mst(file_handler, mst_list);
 
-    graph_destroy(graph);
+    // Destroying the edge list and the file handler
+
+    edge_list_destroy(mst_list);
     edge_list_destroy(edge_list);
     file_handler_destroy(file_handler);
     return 0;

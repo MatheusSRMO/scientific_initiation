@@ -6,6 +6,7 @@
         "string_view": "c",
         "graph.h": "c",
         "stdlib.h": "c",
-        "file_handler.h": "c"
+        "file_handler.h": "c",
+        "kruskal.h": "c"
     }
 }

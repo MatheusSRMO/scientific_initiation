@@ -12,14 +12,12 @@ struct edge_list {
     int current;
 };
 
-int edge_compare(const void *a, const void *b) {
-    Edge *edge_a = (Edge *) a;
-    Edge *edge_b = (Edge *) b;
-    if (edge_a->weight < edge_b->weight) return -1;
-    if (edge_a->weight > edge_b->weight) return 1;
-    return 0;
-}
+int edge_compare(const void* a, const void* b) {
+    Edge* edge_a = (Edge*) a;
+    Edge* edge_b = (Edge*) b;
 
+    return edge_a->weight - edge_b->weight;
+}
 
 EdgeList *edge_list_create(int size) {
     EdgeList *edge_list = (EdgeList *) malloc(sizeof(EdgeList));
@@ -34,10 +32,10 @@ int edge_list_get_size(EdgeList *edge_list) {
 }
 
 void edge_list_add(EdgeList *edge_list, unsigned short int v, unsigned short int w, float weight) {
-    if (edge_list->current >= edge_list->size) {
-        printf("EdgeList is full\n");
-        return;
-    }
+    // if (edge_list->current >= edge_list->size) {
+    //     printf("EdgeList is full\n");
+    //     return;
+    // }
     edge_list->edges[edge_list->current].v = v;
     edge_list->edges[edge_list->current].w = w;
     edge_list->edges[edge_list->current].weight = weight;
@@ -50,6 +48,11 @@ unsigned short int edge_list_get_v(EdgeList *edge_list, int index) {
 
 unsigned short int edge_list_get_w(EdgeList *edge_list, int index) {
     return edge_list->edges[index].w;
+}
+
+void edge_list_get_vw(EdgeList *edge_list, int index, unsigned short int *v, unsigned short int *w) {
+    *v = edge_list->edges[index].v;
+    *w = edge_list->edges[index].w;
 }
 
 float edge_list_get_weight(EdgeList *edge_list, int index) {

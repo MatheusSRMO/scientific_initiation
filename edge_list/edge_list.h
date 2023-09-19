@@ -35,6 +35,13 @@ unsigned short int edge_list_get_v(EdgeList *edge_list, int index);
 /// @return id of the second vertex of the edge at index
 unsigned short int edge_list_get_w(EdgeList *edge_list, int index);
 
+/// @brief Get the ids of the edge at index
+/// @param edge_list pointer to the list
+/// @param index index of the edge
+/// @param v pointer to the id of the first vertex of the edge at index
+/// @param w pointer to the id of the second vertex of the edge at index
+void edge_list_get_vw(EdgeList *edge_list, int index, unsigned short int *v, unsigned short int *w);
+
 /// @brief Get the weight of the edge at index
 /// @param edge_list pointer to the list
 /// @param index index of the edge

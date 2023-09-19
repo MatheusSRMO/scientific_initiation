@@ -1,2 +1,2 @@
 all:
-	gcc -o main main.c **/*.c **/**/*.c -lm
+	gcc -o main main.c **/*.c  -lm
