@@ -42,15 +42,16 @@ Graph *graph_create(int V, graph_type type) {
     graph->type = type;
 
     if (type == adj_matrix) {
-        graph->adjacency_matrix = (float **) malloc(sizeof(float *) * V);
         // Aloca uma matriz triangular
+        // Aassumindo que a distancia do vertice para ele mesmo é 0 
+        // Que o grafo é não direcionado
+        graph->adjacency_matrix = (float **) malloc(sizeof(float *) * V);
         for (int i = 0; i < V; i++) {
-            graph->adjacency_matrix[i] = (float *) malloc(sizeof(float) * (i + 1));
-            for (int j = 0; j < i + 1; j++) {
+            graph->adjacency_matrix[i] = (float *) malloc(sizeof(float) * (i));
+            for (int j = 0; j < i; j++) {
                 graph->adjacency_matrix[i][j] = 0;
             }
         }
-        // seta adjancency_list para NULL para não dar segmentation fault
         graph->adjacency_list = NULL;
     }
     else if (type == adj_list) {
@@ -58,7 +59,6 @@ Graph *graph_create(int V, graph_type type) {
         for (int i = 0; i < V; i++) {
             graph->adjacency_list[i] = NULL;
         }
-        // seta adjacency_matrix para NULL para não dar segmentation fault
         graph->adjacency_matrix = NULL;
     }
 
@@ -66,6 +66,8 @@ Graph *graph_create(int V, graph_type type) {
 }
 
 void graph_add_edge(Graph *graph, int v, int w, float weight) {
+    if (v == w) return;
+    if (weight == 0) return;
     if (v > w) swap(&v, &w);
 
     if (graph->type == adj_matrix) {
@@ -82,7 +84,8 @@ void graph_add_edge(Graph *graph, int v, int w, float weight) {
 }
 
 float graph_get_weight(Graph *graph, int v, int w) {
-    if (v > w) swap(&v, &w); 
+    if (v == w) return 0;
+    if (v > w) swap(&v, &w);
 
     if (graph->type == adj_matrix) {
         return graph->adjacency_matrix[w][v];
@@ -101,9 +104,15 @@ float graph_get_weight(Graph *graph, int v, int w) {
 
 void graph_print(Graph *graph) {
     if (graph->type == adj_matrix) {
+        printf("\t");
         for (int i = 0; i < graph->V; i++) {
-            for (int j = 0; j < i + 1; j++) {
-                printf("%.2f ", graph->adjacency_matrix[i][j]);
+            printf("%d\t", i);
+        }
+        printf("\n");
+        for (int i = 0; i < graph->V; i++) {
+            printf("%d\t", i);
+            for (int j = 0; j < i; j++) {
+                printf("%.2f\t", graph_get_weight(graph, i, j));
             }
             printf("\n");
         }
@@ -140,4 +149,40 @@ void graph_destroy(Graph *graph) {
         free(graph->adjacency_list);
     }
     free(graph);
+}
+
+void graph_to_edge_list(Graph *graph, EdgeList *edge_list) {
+    if(graph == NULL || edge_list == NULL) return;
+
+    if(graph->type == adj_matrix) {
+        for(int i = 0; i < graph->V; i++) {
+            for(int j = 0; j < i; j++) {
+                float weight = graph_get_weight(graph, i, j);
+                if(weight != 0) {
+                    edge_list_add(edge_list, i, j, weight);
+                }
+            }
+        }
+    }
+    else if(graph->type == adj_list) {
+        for(int i = 0; i < graph->V; i++) {
+            Node *node = graph->adjacency_list[i];
+            while(node != NULL) {
+                edge_list_add(edge_list, i, node->target, node->weight);
+                node = node->next;
+            }
+        }
+    }
+}
+
+void graph_of_edge_list(Graph *graph, EdgeList *edge_list) {
+    if(graph == NULL || edge_list == NULL) return;
+
+    int size = edge_list_get_size(edge_list);
+    for(int i = 0; i < size; i++) {
+        int v = edge_list_get_v(edge_list, i);
+        int w = edge_list_get_w(edge_list, i);
+        float weight = graph_get_weight(graph, v, w);
+        graph_add_edge(graph, v, w, weight);
+    }
 }

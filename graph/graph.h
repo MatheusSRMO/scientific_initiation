@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include "../edge_list/edge_list.h"
 
 enum graph_type {
     adj_matrix,
@@ -23,5 +24,9 @@ float graph_get_weight(Graph *graph, int v, int w);
 void graph_print(Graph *graph);
 
 void graph_destroy(Graph *graph);
+
+void graph_to_edge_list(Graph *graph, EdgeList *edge_list);
+
+void graph_of_edge_list(Graph *graph, EdgeList *edge_list);
 
 #endif
