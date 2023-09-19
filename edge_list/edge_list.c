@@ -6,6 +6,12 @@ typedef struct edge {
     float weight;
 } Edge;
 
+struct edge_list {
+    Edge *edges;
+    int size;
+    int current;
+};
+
 int edge_compare(const void *a, const void *b) {
     Edge *edge_a = (Edge *) a;
     Edge *edge_b = (Edge *) b;
@@ -14,11 +20,6 @@ int edge_compare(const void *a, const void *b) {
     return 0;
 }
 
-struct edge_list {
-    Edge *edges;
-    int size;
-    int current;
-};
 
 EdgeList *edge_list_create(int size) {
     EdgeList *edge_list = (EdgeList *) malloc(sizeof(EdgeList));
@@ -60,8 +61,9 @@ void edge_list_sort(EdgeList *edge_list) {
 }
 
 void edge_list_print(EdgeList *edge_list) {
+    printf("v\tw\tweight\n");
     for (int i = 0; i < edge_list->current; i++) {
-        printf("%d %d %f\n", edge_list->edges[i].v, edge_list->edges[i].w, edge_list->edges[i].weight);
+        printf("%d\t%d\t%.2f\n", edge_list->edges[i].v, edge_list->edges[i].w, edge_list->edges[i].weight);
     }
 }
 

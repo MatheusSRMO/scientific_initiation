@@ -115,7 +115,6 @@ void scp_file_reader(FILE* file, void** data) {
             }
         }
         else if (strncmp(buffer, "EDGES_SECTION", 13) == 0) {
-            printf("EDGES_SECTION\n");
             scp->edges = malloc(sizeof(Edge) * scp->edges_dimension);
 
             for (int i = 0; i < scp->edges_dimension; i++) {
@@ -139,6 +138,13 @@ void scp_file_reader(FILE* file, void** data) {
     }
 
     *data = scp;
+}
+
+void scp_file_data_to_edge_list(void* data, EdgeList* edge_list) {
+    Scp *scp = (Scp*) data;
+    for (int i = 0; i < scp->edges_dimension; i++) {
+        edge_list_add(edge_list, scp->edges[i].from-1, scp->edges[i].to-1, scp->edges[i].weight);
+    }
 }
 
 void scp_file_writer(FILE* file, void* data, char* file_name) {
@@ -179,4 +185,14 @@ void scp_file_destructor(void* data) {
     free(scp->edges);
     free(scp->constructs);
     free(scp);
+}
+
+int scp_file_get_dimension(void* data) {
+    Scp* scp = (Scp*) data;
+    return scp->dimension;
+}
+
+int scp_file_get_edges_dimension(void* data) {
+    Scp* scp = (Scp*) data;
+    return scp->edges_dimension;
 }

@@ -74,6 +74,16 @@ void vrp_file_reader(FILE* file, void** data) {
     *data = (void*) vrp;
 }
 
+void vrp_file_data_to_edge_list(void* data, EdgeList* edge_list) {
+    Vrp *vrp = (Vrp*) data;
+    for (int i = 0; i < vrp->dimension; i++) {
+        for (int j = i + 1; j < vrp->dimension; j++) {
+            float weight = sqrt(pow(vrp->nodes[i].x - vrp->nodes[j].x, 2) + pow(vrp->nodes[i].y - vrp->nodes[j].y, 2));
+            edge_list_add(edge_list, vrp->nodes[i].id-1, vrp->nodes[j].id-1, weight);
+        }
+    }
+}
+
 void vrp_file_writer(FILE* file, void* data, char* file_name) {
     Vrp *vrp = (Vrp*) data;
     printf("NAME : %s\n", vrp->name);
@@ -104,4 +114,9 @@ void vrp_file_destructor(void* data) {
     free(vrp->edge_weight_type);
     free(vrp->nodes);
     free(vrp);
+}
+
+int vrp_file_get_dimension(void* data) {
+    Vrp *vrp = (Vrp*) data;
+    return vrp->dimension;
 }

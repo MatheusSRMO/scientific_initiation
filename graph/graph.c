@@ -74,10 +74,7 @@ void graph_add_edge(Graph *graph, int v, int w, float weight) {
         graph->adjacency_matrix[w][v] = weight;
     }
     else if (graph->type == adj_list) {
-        float weight = graph_get_weight(graph, v, w);
-        if (weight != 0) {
-            return;
-        }
+        if (graph_get_weight(graph, v, w) != 0) return;
         graph->adjacency_list[v] = node_contruct(w, weight, graph->adjacency_list[v]);
     }
     graph->E++;
@@ -182,7 +179,7 @@ void graph_of_edge_list(Graph *graph, EdgeList *edge_list) {
     for(int i = 0; i < size; i++) {
         int v = edge_list_get_v(edge_list, i);
         int w = edge_list_get_w(edge_list, i);
-        float weight = graph_get_weight(graph, v, w);
+        float weight = edge_list_get_weight(edge_list, i);
         graph_add_edge(graph, v, w, weight);
     }
 }
