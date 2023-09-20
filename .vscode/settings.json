@@ -7,6 +7,8 @@
         "graph.h": "c",
         "stdlib.h": "c",
         "file_handler.h": "c",
-        "kruskal.h": "c"
+        "kruskal.h": "c",
+        "cmath": "c",
+        "complex": "c"
     }
 }

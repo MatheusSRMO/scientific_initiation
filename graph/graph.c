@@ -99,6 +99,10 @@ float graph_get_weight(Graph *graph, int v, int w) {
     return 0;
 }
 
+int graph_get_V(Graph *graph) {
+    return graph->V;
+}
+
 void graph_print(Graph *graph) {
     if (graph->type == adj_matrix) {
         printf("\t");

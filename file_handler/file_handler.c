@@ -5,7 +5,7 @@
 float euclidean_distance(float x1, float y1, float x2, float y2) {
     float x = x1 - x2;
     float y = y1 - y2;
-    return x * x + y * y;
+    return sqrt(x * x + y * y);
 }
 
 typedef struct construct {

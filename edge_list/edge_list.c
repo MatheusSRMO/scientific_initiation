@@ -13,10 +13,7 @@ struct edge_list {
 };
 
 int edge_compare(const void* a, const void* b) {
-    Edge* edge_a = (Edge*) a;
-    Edge* edge_b = (Edge*) b;
-
-    return edge_a->weight - edge_b->weight;
+    return ((Edge*) a)->weight - ((Edge*) b)->weight;
 }
 
 EdgeList *edge_list_create(int size) {

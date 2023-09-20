@@ -21,6 +21,8 @@ void graph_add_edge(Graph *graph, int v, int w, float weight);
 
 float graph_get_weight(Graph *graph, int v, int w);
 
+int graph_get_V(Graph *graph);
+
 void graph_print(Graph *graph);
 
 void graph_destroy(Graph *graph);
