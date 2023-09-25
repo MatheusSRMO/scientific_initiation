@@ -38,18 +38,18 @@ Definição: Dado um grafo G = (V, E), o problema de empacotamento de vértices 
 - Conjunto de esquinas C = {c1, c2, ..., cl} onde C representa as esquinas que cobrem todos os pontos de interesse.
 
 *Restrições:*
-1. A soma de x_{ij} para todo i de 1 a l deve ser maior ou igual a 1 para todo j de 1 a k.
+1. A soma de Xij para todo i de 1 a l deve ser maior ou igual a 1 para todo j de 1 a k.
    - Cada ponto de interesse deve ser coberto por no mínimo uma esquina.
 
-2. x_{ij} = 0 se a distância entre a esquina i e o ponto de interesse j for maior que r.
+2. Xij = 0 se a distância entre a esquina i e o ponto de interesse j for maior que r.
 
-3. x_{ij} = 1 se a distância entre a esquina i e o ponto de interesse j for menor ou igual a r.
+3. Xij = 1 se a distância entre a esquina i e o ponto de interesse j for menor ou igual a r.
 
 *Função Objetivo:*
 Minimizar o número de esquinas que cubram todos os pontos de interesse.
 
 *Variáveis de Decisão:*
-Variável binária x_{ij} é igual a 1 se a esquina i cobre o ponto de interesse j e 0 caso contrário.
+Variável binária Xij é igual a 1 se a esquina i cobre o ponto de interesse j e 0 caso contrário.
 
 Solução: 0 1 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 1 0 0 0 0
 
