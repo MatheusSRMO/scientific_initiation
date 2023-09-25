@@ -15,11 +15,11 @@ Ou seja, para nosso problema, dado um conjunto de esquinas e um conjunto de pont
 
 ## Problema do Particionamento de Conjuntos
 Definição: Dado um conjunto de elementos U e um inteiro k, o problema do particionamento de conjuntos consiste em encontrar k subconjuntos de U cuja união é igual a U.
-Ou seja, para nosso problema, dado um conjunto de esquinas e um conjunto de pontos de interesse, o problema do particionamento de conjuntos consiste em encontrar k subconjuntos de esquinas que cubram todos os pontos de interesse.
+Ou seja, para nosso problema, dado um conjunto de residencias e um inteiro k, o problema de particionamento de conjustos consiste em encontrar k esquinas que cubram todas as residências.
 
 ## Problema de empacotamento de conjuntos
 Definição: Dado um conjunto de elementos U e um inteiro k, o problema de empacotamento de conjuntos consiste em encontrar k subconjuntos de U cuja interseção é vazia.
-Ou seja, para nosso problema, dado um conjunto de esquinas e um conjunto de pontos de interesse, o problema de empacotamento de conjuntos consiste em encontrar k subconjuntos de esquinas que cubram todos os pontos de interesse.
+ou seja, para nosso problema, dado um conjunto de residencias e um inteiro k, o problema do empacotamento de conjuntos consiste em encontrar k esquinas de forma que duas esquinas não cubram a mesma residencia.
 
 ## Problema de cobertura de vértices
 Definição: Dado um grafo G = (V, E), o problema de cobertura de vértices consiste em encontrar o menor subconjunto de V cuja união é igual a E.
