@@ -35,6 +35,7 @@ struct graph {
     graph_type type;            // Tipo do grafo
 };
 
+// Cria um grafo com V vértices, tipo type e se é direcionado ou não, caso for, a matriz de adjacência não é triangular
 Graph *graph_create(int V, graph_type type) {
     Graph *graph = (Graph *) malloc(sizeof(Graph));
     graph->V = V;
@@ -176,7 +177,7 @@ void graph_to_edge_list(Graph *graph, EdgeList *edge_list) {
     }
 }
 
-void graph_of_edge_list(Graph *graph, EdgeList *edge_list) {
+void graph_from_edge_list(Graph *graph, EdgeList *edge_list) {
     if(graph == NULL || edge_list == NULL) return;
 
     int size = edge_list_get_size(edge_list);
@@ -186,4 +187,105 @@ void graph_of_edge_list(Graph *graph, EdgeList *edge_list) {
         float weight = edge_list_get_weight(edge_list, i);
         graph_add_edge(graph, v, w, weight);
     }
+}
+
+void graph_to_dot(Graph *graph, char *filename) {
+    FILE *file = fopen(filename, "w");
+    fprintf(file, "graph {\n");
+    fprintf(file, "\tgraph [dpi = 300];\n");
+    fprintf(file, "\tedge [penwidth = 0.5];\n");
+    fprintf(file, "\tnode [style = filled, fillcolor = \"green\"];\n");
+
+    if(graph->type == adj_matrix) {
+        for(int i = 0; i < graph->V; i++) {
+            for(int j = 0; j < i; j++) {
+                float weight = graph_get_weight(graph, i, j);
+                if(weight != 0) {
+                    fprintf(file, "\t%d -- %d [label = \"%.2f\"];\n", i + 1, j + 1, weight);
+                }
+            }
+        }
+    }
+
+    else if(graph->type == adj_list) {
+        for(int i = 0; i < graph->V; i++) {
+            Node *node = graph->adjacency_list[i];
+            while(node != NULL) {
+                fprintf(file, "\t%d -- %d [label = \"%.2f\"];\n", i + 1, node->target + 1, node->weight);
+                node = node->next;
+            }
+        }
+    }
+
+    fprintf(file, "}\n");
+    fclose(file);
+}
+
+void graph_to_dot_solve(Graph *graph, Point** points, Point** constructions, int constructions_size, int* solution, int solution_size, char *filename) {
+    int REDUCE_FACTOR = 4;
+
+    FILE *file = fopen(filename, "w");
+    fprintf(file, "graph {\n");
+    fprintf(file, "\tgraph [dpi = 300];\n");
+    // fprintf(file, "\tnode [shape = circle, width = 0.1, height = 0.1, fixedsize = true];\n");
+    fprintf(file, "\tedge [penwidth = 0.5];\n");
+
+    // primeiro os points
+    for(int i = 0; i < graph->V; i++) {
+        int id = point_get_id(points[i]);
+        float x = point_get_x(points[i]) / REDUCE_FACTOR;
+        float y = point_get_y(points[i]) / REDUCE_FACTOR;
+        fprintf(file, "\t%d [pos = \"%f,%f!\", color=\"green\"];\n", id, x / REDUCE_FACTOR, y / REDUCE_FACTOR);
+    }
+    // depois as constructions
+    for(int i = 0; i < constructions_size; i++) {
+        int id = point_get_id(constructions[i]) + graph->V;
+        float x = point_get_x(constructions[i]) / REDUCE_FACTOR;
+        float y = point_get_y(constructions[i]) / REDUCE_FACTOR;
+        fprintf(file, "\t%d [pos = \"%f,%f!\", color=\"red\"];\n", id, x / REDUCE_FACTOR, y / REDUCE_FACTOR);
+    }
+
+    if(solution != NULL) {
+        for(int i = 0; i < solution_size; i++) {
+            if(solution[i] == 1) {
+                Point *point = points[i];
+                int id = point_get_id(point);
+                fprintf(file, "\t%d [color=\"brown3\"];\n", id);
+
+                // desenha uma aresta em todos os pontos que estão no raio de alcance de 100
+                for(int j = 0; j < constructions_size; j++) {
+                    Point *construction = constructions[j];
+                    if(point_in_range(point, construction, 100, eucledian)) {
+                        int id = point_get_id(construction) + graph->V;
+                        fprintf(file, "\t%d [color=\"blue\"];\n", id);
+                        fprintf(file, "\t%d -- %d [color=\"blue\"];\n", point_get_id(point), id);
+                    }
+                }
+            }
+        }
+    }
+    
+    // depois as arestas
+    if(graph->type == adj_matrix) {
+        for(int i = 0; i < graph->V; i++) {
+            for(int j = 0; j < i; j++) {
+                float weight = graph_get_weight(graph, i, j);
+                if(weight != 0) {
+                    fprintf(file, "\t%d -- %d [label = \"%.2f\"];\n", i + 1, j + 1, weight);
+                }
+            }
+        }
+    }
+    else if(graph->type == adj_list) {
+        for(int i = 0; i < graph->V; i++) {
+            Node *node = graph->adjacency_list[i];
+            while(node != NULL) {
+                fprintf(file, "\t%d -- %d [label = \"%.2f\"];\n", i + 1, node->target + 1, node->weight);
+                node = node->next;
+            }
+        }
+    }
+
+    fprintf(file, "}\n");
+    fclose(file);
 }

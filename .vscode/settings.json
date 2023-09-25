@@ -9,6 +9,12 @@
         "file_handler.h": "c",
         "kruskal.h": "c",
         "cmath": "c",
-        "complex": "c"
+        "complex": "c",
+        "set_covering.h": "c",
+        "edge_list.h": "c",
+        "array": "c",
+        "initializer_list": "c",
+        "utility": "c",
+        "point.h": "c"
     }
 }

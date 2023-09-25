@@ -96,7 +96,7 @@ def fetch_graph_for_location(place_name):
         networkx.MultiDiGraph: The road network graph.
     """
     return ox.graph_from_place(
-        place_name, network_type='drive_service', simplify=True, truncate_by_edge=True
+        place_name, network_type='drive_service', simplify=True
     )
 
 def fetch_building_geometries(place_name):

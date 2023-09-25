@@ -378,3 +378,19 @@ void file_handler_write_mst(FileHandler* file_handler, EdgeList* mst_list) {
     fclose(file);
     free(file_name);
 }
+
+Point** scp_file_constructs_to_points_list(FileHandler* file_handler) {
+    Point** point_list = point_list_create(file_handler->constructions_dimension);
+    for (int i = 0; i < file_handler->constructions_dimension; i++) {
+        point_list[i] = point_create(file_handler->constructs[i].id ,file_handler->constructs[i].x, file_handler->constructs[i].y);
+    }
+    return point_list;
+}
+
+Point** scp_file_nodes_to_points_list(FileHandler* file_handler) {
+    Point** point_list = point_list_create(file_handler->dimension);
+    for (int i = 0; i < file_handler->dimension; i++) {
+        point_list[i] = point_create(file_handler->nodes[i].id ,file_handler->nodes[i].x, file_handler->nodes[i].y);
+    }
+    return point_list;
+}

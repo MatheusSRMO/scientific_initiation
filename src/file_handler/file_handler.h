@@ -9,6 +9,7 @@
 #include <math.h>
 #include <time.h>
 #include "../edge_list/edge_list.h"
+#include "../point/point.h"
 
 typedef enum {
     cvrp,
@@ -33,6 +34,8 @@ void cvrp_file_data_to_edge_list(FileHandler* file_handler, EdgeList* edge_list)
 void scp_file_data_to_edge_list(FileHandler* file_handler, EdgeList* edge_list);
 void tsp_file_data_to_edge_list(FileHandler* file_handler, EdgeList* edge_list);
 
+Point** scp_file_constructs_to_points_list(FileHandler* file_handler);
+Point** scp_file_nodes_to_points_list(FileHandler* file_handler);
 
 void cvrp_file_reader(FILE* file, FileHandler* file_handler);
 void scp_file_reader(FILE* file, FileHandler* file_handler);
