@@ -31,11 +31,11 @@ Definição: Dado um grafo G = (V, E), o problema de empacotamento de vértices 
 
 ### Entrada
 - Grafo G = (V, E) // V = {v1, v2, ..., vn} e E = {e1, e2, ..., em} V = Esquinas e E = Ruas
-- Conjunto de pontos de interesse P = {p1, p2, ..., pk} // P = {p1, p2, ..., pk} P = Pontos de interesse
-- Int r // r = 1, 2, ..., r r = Raio de cobertura de cada esquina
+- Conjunto de pontos de interesse P = {p1, p2, ..., pk} // P = Pontos de interesse
+- Int r // r >= 0 onde r = Raio de cobertura de cada esquina
 
 ### Saída
-- Conjunto de esquinas C = {c1, c2, ..., cl} // C = {c1, c2, ..., cl} C = Esquinas que cobrem todos os pontos de interesse
+- Conjunto de esquinas C = {c1, c2, ..., cl} // C = Esquinas que cobrem todos os pontos de interesse
 
 ### Restrições
 - Cada esquina só pode cobrir pontos de interesse que estejam a uma distância r
