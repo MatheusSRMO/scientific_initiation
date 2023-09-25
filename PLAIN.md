@@ -29,33 +29,29 @@ Definição: Dado um grafo G = (V, E), o problema de empacotamento de vértices 
 
 ## Modelando o problema para que cada esquina (vértice) cubra todas as residencias (pontos de interesse)
 
-### Entrada
-- Grafo G = (V, E) // V = {v1, v2, ..., vn} e E = {e1, e2, ..., em} V = Esquinas e E = Ruas
-- Conjunto de pontos de interesse P = {p1, p2, ..., pk} // P = Pontos de interesse
-- Int r // r >= 0 onde r = Raio de cobertura de cada esquina
+## Problema de Otimização
 
-### Saída
-- Conjunto de esquinas C = {c1, c2, ..., cl} // C = Esquinas que cobrem todos os pontos de interesse
+**Entrada:**
+- Grafo \(G = (V, E)\) onde \(V = \{v_1, v_2, ..., v_n\}\) e \(E = \{e_1, e_2, ..., e_m\}\). \(V\) representa as esquinas e \(E\) representa as ruas.
+- Conjunto de pontos de interesse \(P = \{p_1, p_2, ..., p_k\}\) onde \(P\) representa os pontos de interesse.
+- Inteiro \(r \geq 0\) onde \(r\) é o raio de cobertura de cada esquina.
 
-### Restrições
-- Cada esquina só pode cobrir pontos de interesse que estejam a uma distância r
+**Saída:**
+- Conjunto de esquinas \(C = \{c_1, c_2, ..., c_l\}\) onde \(C\) representa as esquinas que cobrem todos os pontos de interesse.
 
-### Função objetivo
-- Minimizar o número de esquinas que cubram todos os pontos de interesse
+**Restrições:**
+1. \(\sum_{i=1}^{l} x_{ij} \geq 1\) para todo \(j = 1, 2, ..., k\)
+   - Cada ponto de interesse deve ser coberto por no mínimo uma esquina.
 
-### Variáveis de decisão
-- Variável binária xij = 1 se a esquina i cobre o ponto de interesse j e 0 caso contrário
+2. \(x_{ij} = 0\) se a distância entre a esquina \(i\) e o ponto de interesse \(j\) for maior que \(r\).
 
-### Modelo matemático
-- Minimizar a função objetivo
-- Sujeito a:
-    - Somatório de xij = 1 para todo j = 1, 2, ..., k
-    - Somatório de xij <= 1 para todo i = 1, 2, ..., l
-    - xij = 0 se a distância entre a esquina i e o ponto de interesse j for maior que r
-    - xij = 1 se a distância entre a esquina i e o ponto de interesse j for menor ou igual a r
+3. \(x_{ij} = 1\) se a distância entre a esquina \(i\) e o ponto de interesse \(j\) for menor ou igual a \(r\).
 
+**Função Objetivo:**
+Minimizar o número de esquinas que cubram todos os pontos de interesse.
 
-Seja Sj o subconjunto de esquinas que cobrem o ponto de interesse j, então: Sj = {i | xij = 1}
+**Variáveis de Decisão:**
+Variável binária \(x_{ij} = 1\) se a esquina \(i\) cobre o ponto de interesse \(j\) e \(0\) caso contrário.
 
 
 
