@@ -29,31 +29,28 @@ Definição: Dado um grafo G = (V, E), o problema de empacotamento de vértices 
 
 ## Modelando o problema para que cada esquina (vértice) cubra todas as residencias (pontos de interesse)
 
-## Problema de Otimização
+*Entrada:*
+- Grafo G = (V, E) onde V = {v1, v2, ..., vn} e E = {e1, e2, ..., em}. V representa as esquinas e E representa as ruas.
+- Conjunto de pontos de interesse P = {p1, p2, ..., pk} onde P representa os pontos de interesse.
+- Inteiro r ≥ 0 onde r é o raio de cobertura de cada esquina.
 
-**Entrada:**
-- Grafo \(G = (V, E)\) onde \(V = \{v_1, v_2, ..., v_n\}\) e \(E = \{e_1, e_2, ..., e_m\}\). \(V\) representa as esquinas e \(E\) representa as ruas.
-- Conjunto de pontos de interesse \(P = \{p_1, p_2, ..., p_k\}\) onde \(P\) representa os pontos de interesse.
-- Inteiro \(r \geq 0\) onde \(r\) é o raio de cobertura de cada esquina.
+*Saída:*
+- Conjunto de esquinas C = {c1, c2, ..., cl} onde C representa as esquinas que cobrem todos os pontos de interesse.
 
-**Saída:**
-- Conjunto de esquinas \(C = \{c_1, c_2, ..., c_l\}\) onde \(C\) representa as esquinas que cobrem todos os pontos de interesse.
-
-**Restrições:**
-1. \(\sum_{i=1}^{l} x_{ij} \geq 1\) para todo \(j = 1, 2, ..., k\)
+*Restrições:*
+1. A soma de x_{ij} para todo i de 1 a l deve ser maior ou igual a 1 para todo j de 1 a k.
    - Cada ponto de interesse deve ser coberto por no mínimo uma esquina.
 
-2. \(x_{ij} = 0\) se a distância entre a esquina \(i\) e o ponto de interesse \(j\) for maior que \(r\).
+2. x_{ij} = 0 se a distância entre a esquina i e o ponto de interesse j for maior que r.
 
-3. \(x_{ij} = 1\) se a distância entre a esquina \(i\) e o ponto de interesse \(j\) for menor ou igual a \(r\).
+3. x_{ij} = 1 se a distância entre a esquina i e o ponto de interesse j for menor ou igual a r.
 
-**Função Objetivo:**
+*Função Objetivo:*
 Minimizar o número de esquinas que cubram todos os pontos de interesse.
 
-**Variáveis de Decisão:**
-Variável binária \(x_{ij} = 1\) se a esquina \(i\) cobre o ponto de interesse \(j\) e \(0\) caso contrário.
-
-
+*Variáveis de Decisão:*
+Variável binária x_{ij} é igual a 1 se a esquina i cobre o ponto de interesse j e 0 caso contrário.
 
 Solução: 0 1 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 1 0 0 0 0
+
 Vértices = {2, 13, 23}
