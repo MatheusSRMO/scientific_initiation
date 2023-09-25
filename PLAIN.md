@@ -57,35 +57,7 @@ Definição: Dado um grafo G = (V, E), o problema de empacotamento de vértices 
 
 Seja Sj o subconjunto de esquinas que cobrem o ponto de interesse j, então: Sj = {i | xij = 1}
 
-## Modelando o problema para que cada esquina (vértice) cubra todas as residencias (pontos de interesse) e cada esquina tenha um custo de instalação
 
-### Entrada
-- Grafo G = (V, E) // V = {v1, v2, ..., vn} e E = {e1, e2, ..., em} V = Esquinas e E = Ruas
-- Conjunto de pontos de interesse P = {p1, p2, ..., pk} // P = {p1, p2, ..., pk} P = Pontos de interesse
-- Int r // r = 1, 2, ..., r r = Raio de cobertura de cada esquina
-- Int c // c = 1, 2, ..., c c = Custo de instalação de cada esquina
 
-### Saída
-- Conjunto de esquinas C = {c1, c2, ..., cl} // C = {c1, c2, ..., cl} C = Esquinas que cubram todos os pontos de interesse
-
-### Restrições
-- Cada esquina só pode cobrir pontos de interesse que estejam a uma distância r
-
-### Função objetivo
-- Minimizar o custo total de instalação das esquinas que cubram todos os pontos de interesse
-
-### Variáveis de decisão
-- Variável binária xij = 1 se a esquina i cobre o ponto de interesse j e 0 caso contrário
-
-### Modelo matemático
-- Minimizar a função objetivo
-- Sujeito a:
-    - Somatório de xij = 1 para todo j = 1, 2, ..., k
-    - Somatório de xij <= 1 para todo i = 1, 2, ..., l
-    - xij = 0 se a distância entre a esquina i e o ponto de interesse j for maior que r
-    - xij = 1 se a distância entre a esquina i e o ponto de interesse j for menor ou igual a r
-
-0 1 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 1 0 0 0 0
-2
-13
-23
+Solução: 0 1 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 1 0 0 0 0
+Vértices = {2, 13, 23}
