@@ -28,6 +28,7 @@ Definição: Dado um grafo G = (V, E), o problema de cobertura de vértices cons
 Definição: Dado um grafo G = (V, E), o problema de empacotamento de vértices consiste em encontrar o maior subconjunto de V cuja interseção é vazia.
 
 ## Modelando o problema para que cada esquina (vértice) cubra todas as residencias (pontos de interesse)
+Ref: http://www.mat.uc.pt/~jsoares/teaching/oc/1112/RelatorioOC.pdf
 
 *Entrada:*
 - Grafo G = (V, E) onde V = {v1, v2, ..., vn} e E = {e1, e2, ..., em}. V representa as esquinas e E representa as ruas.
