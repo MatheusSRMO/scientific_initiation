@@ -55,3 +55,4 @@ Variável binária Xij é igual a 1 se a esquina i cobre o ponto de interesse j 
 Solução: 0 1 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 1 0 0 0 0
 
 Vértices = {2, 13, 23}
+Pesquisa Local Iterada (ILS), Recozimento Simulado (SA) e Pesquisa de Vizinhança Variável (VNS); e dois algoritmos baseados em população: Algoritmo Genético (GA) e Otimização por Enxame de Partículas (PSO).
