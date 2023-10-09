@@ -11,14 +11,24 @@
 void print_points(Point **points_list, int dimension);
 void print_constructions(Point **constructions_list, int constructions_dimension);
 int **build_matrix_A(Point **constructions_list, Point **points_list, int constructions_dimension, int dimension, int range);
-void print_matrix(int **matrix, int linhas, int colunas);
-void print_solution(int *solution, int colunas);
+void print_matrix(int **matrix, int lines, int columns);
+void print_solution(int *solution, int columns);
 
 
 int main(int argc, char const *argv[]) {
-    
-    char* input_file_name = "data/scp/segurança_do_lar_vitoria_es_brasil.scp";
+    // recebe o nome do arquivo de entrada e o raio de cobertura
+    if(argc < 3) {
+        printf("Usage: %s <input_file_name> <range>\n", argv[0]);
+        exit(1);
+    }
+    char *input_file_name = malloc(strlen(argv[1]) * sizeof(char));
+    strcpy(input_file_name, argv[1]);
+    int range = atoi(argv[2]);
 
+    // char* input_file_name = "data/scp/jardim_da_penha_vitoria_es_brasil.scp";
+
+
+    // Create file handler
     FileHandler *file_handler = file_handler_create(input_file_name, scp);
     int dimension = file_handler_get_dimension(file_handler);
     int edges_dimension = file_handler_get_edges_dimension(file_handler);
@@ -26,32 +36,39 @@ int main(int argc, char const *argv[]) {
     printf("Dimension: %d\n", dimension);
     printf("Edges dimension: %d\n", edges_dimension);
     printf("Constructions dimension: %d\n", constructions_dimension);
-
     Point **points_list = scp_file_nodes_to_points_list(file_handler);
-    print_points(points_list, dimension);
-
     Point **constructions_list = scp_file_constructs_to_points_list(file_handler);
-    print_constructions(constructions_list, constructions_dimension);
 
-    int range = 100;
-    int linhas = constructions_dimension;
-    int colunas = dimension;
 
+    // range of coverage
+    // int range = 300;
+    int lines = constructions_dimension;
+    int columns = dimension;
+
+
+    // builds coverage matrix A
     int **A = build_matrix_A(constructions_list, points_list, constructions_dimension, dimension, range);
-    print_matrix(A, linhas, colunas);
 
-    int* solution = find_minimal_coverage(A, linhas, colunas);
-    printf("Solution: ");
-    print_solution(solution, colunas);
 
+    // find vector solution to cover all points
+    int* solution = find_minimal_coverage(A, lines, columns);
+    print_solution(solution, columns);
+
+
+    // Generate graph and edge list
     Graph *graph = graph_create(dimension, adj_matrix);
-
     EdgeList *edge_list = edge_list_create(edges_dimension);
     file_handler_to_edge_list(file_handler, edge_list);
     graph_from_edge_list(graph, edge_list);
 
-    graph_to_dot_solve(graph, points_list, constructions_list, constructions_dimension, solution, colunas, "graph.dot");
 
+    // Generate graph.dot and graph.jpg
+    graph_to_dot_solve(graph, points_list, constructions_list, constructions_dimension, solution, columns, range, "graph.dot");
+    system("neato -Tjpg graph.dot -o graph.jpg");
+    remove("graph.dot"); // delete graph.dot
+
+
+    /* Frees Allocated Memory */
     edge_list_destroy(edge_list);
     graph_destroy(graph);
     for(int i = 0; i < constructions_dimension; i++) {
@@ -62,6 +79,7 @@ int main(int argc, char const *argv[]) {
     point_list_destroy(points_list, dimension);
     point_list_destroy(constructions_list, constructions_dimension);
     file_handler_destroy(file_handler);
+    free(input_file_name);
     return 0;
 }
 
@@ -96,18 +114,22 @@ int **build_matrix_A(Point **constructions_list, Point **points_list, int constr
     return A;
 }
 
-void print_matrix(int **matrix, int linhas, int colunas) {
-    for(int i = 0; i < linhas; i++) {
-        for(int j = 0; j < colunas; j++) {
+void print_matrix(int **matrix, int lines, int columns) {
+    for(int i = 0; i < lines; i++) {
+        for(int j = 0; j < columns; j++) {
             printf("%d ", matrix[i][j]);
         }
         printf("\n");
     }
 }
 
-void print_solution(int *solution, int colunas) {
-    for(int i = 0; i < colunas; i++) {
+void print_solution(int *solution, int columns) {
+    int cont = 0;
+    printf("Solution: ");
+    for(int i = 0; i < columns; i++) {
         printf("%d ", solution[i]);
+        if(solution[i]) cont++;
     }
     printf("\n");
+    printf("Number of sets: %d\n", cont);
 }

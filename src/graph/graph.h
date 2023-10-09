@@ -95,7 +95,7 @@ void graph_to_dot(Graph *graph, char *filename);
  * param solution_size: tamanho do vetor de solução
  * param filename: nome do arquivo .dot
  */
-void graph_to_dot_solve(Graph *graph, Point** points, Point** constructions, int constructions_size, int* solution, int solution_size, char *filename);
+void graph_to_dot_solve(Graph *graph, Point** points, Point** constructions, int constructions_size, int* solution, int solution_size, int range, char *filename);
 
 /*
  * Transforma um arquivo .dot em um grafo.

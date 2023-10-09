@@ -15,6 +15,7 @@
         "array": "c",
         "initializer_list": "c",
         "utility": "c",
-        "point.h": "c"
+        "point.h": "c",
+        "local_search_set_cover.h": "c"
     }
 }

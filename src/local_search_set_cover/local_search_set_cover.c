@@ -55,7 +55,10 @@ int evaluate_without_element(int **A, int m, int n, int coverage[], int index) {
 }
 
 // Função para gerar um vizinho
-int* generate_neighbor(int **A, int m, int n, int *current_solution, int index) {
+int* generate_neighbor(int **A, int m, int n, int *current_solution) {
+    // Gerar um vizinho aleatório
+    int index = rand() % n;
+
     int *neighbor = malloc(n * sizeof(int));
     int i;
 
@@ -74,32 +77,24 @@ int* find_minimal_coverage(int **A, int m, int n) {
     srand(time(NULL));
 
     int *coverage = malloc(n * sizeof(int));
-    int *best_neighbor = malloc(n * sizeof(int));
     int *current_solution = malloc(n * sizeof(int));
     int iterations_without_improvement = 0;
     int i, j, k, l, count, best_count;
 
-    // Passo 1: Inicializar a solução atual
+    // Inicializar a solução atual
     for (i = 0; i < n; i++) {
         current_solution[i] = 1;
     }
 
-    // Passo 2: Inicializar a melhor solução
-    for (i = 0; i < n; i++) {
-        best_neighbor[i] = 1;
-    }
-
-    // Passo 3: Inicializar o contador de iterações sem melhora
+    // Inicializar o contador de iterações sem melhora
     iterations_without_improvement = 0;
 
-    // Passo 4: Enquanto o contador de iterações sem melhora for menor que MAX_ITERATIONS
+    // Enquanto o contador de iterações sem melhora for menor que MAX_ITERATIONS
     while (iterations_without_improvement < MAX_ITERATIONS) {
-        
-        // Passo 5: Gerar um vizinho aleatório
-        int index = rand() % n;
-        int *neighbor = generate_neighbor(A, m, n, current_solution, index);
 
-        // Passo 6: Se o vizinho for pior que a solução atual ou não cobrir todos os conjuntos, continuar
+        int *neighbor = generate_neighbor(A, m, n, current_solution);
+
+        // Se o vizinho for pior que a solução atual ou não cobrir todos os conjuntos, continuar
         if (
             !all_covered(A, m, n, neighbor)
             || evaluate_coverage(A, m, n, neighbor) >= evaluate_coverage(A, m, n, current_solution)
@@ -109,12 +104,12 @@ int* find_minimal_coverage(int **A, int m, int n) {
             continue;
         }
 
-        // Passo 7: Se o vizinho for melhor que a solução atual, atualizar a solução atual
+        // Se o vizinho for melhor que a solução atual, atualizar a solução atual
         for (i = 0; i < n; i++) {
             current_solution[i] = neighbor[i];
         }
 
-        // Passo 8: Atualizar o contador de iterações sem melhora
+        // Atualizar o contador de iterações sem melhora
         iterations_without_improvement = 0;
 
         // Liberar memória alocada para o vizinho
@@ -123,7 +118,6 @@ int* find_minimal_coverage(int **A, int m, int n) {
 
     // Liberar memória não utilizada
     free(coverage);
-    free(best_neighbor);
 
     return current_solution;
 }

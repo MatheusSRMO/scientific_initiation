@@ -5,7 +5,7 @@
 #include <stdbool.h>
 #include <time.h>
 
-#define MAX_ITERATIONS 100
+#define MAX_ITERATIONS 1e4
 
 
 bool all_covered(int **A, int m, int n, int coverage[]);
@@ -14,7 +14,7 @@ int evaluate_coverage(int **A, int m, int n, int coverage[]);
 
 int evaluate_without_element(int **A, int m, int n, int coverage[], int index);
 
-int* generate_neighbor(int **A, int m, int n, int *current_solution, int index);
+int* generate_neighbor(int **A, int m, int n, int *current_solution);
 
 int* find_minimal_coverage(int **A, int m, int n);
 

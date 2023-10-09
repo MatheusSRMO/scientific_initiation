@@ -221,8 +221,8 @@ void graph_to_dot(Graph *graph, char *filename) {
     fclose(file);
 }
 
-void graph_to_dot_solve(Graph *graph, Point** points, Point** constructions, int constructions_size, int* solution, int solution_size, char *filename) {
-    int REDUCE_FACTOR = 4;
+void graph_to_dot_solve(Graph *graph, Point** points, Point** constructions, int constructions_size, int* solution, int solution_size, int range, char *filename) {
+    int REDUCE_FACTOR = 6;
 
     FILE *file = fopen(filename, "w");
     fprintf(file, "graph {\n");
@@ -235,14 +235,14 @@ void graph_to_dot_solve(Graph *graph, Point** points, Point** constructions, int
         int id = point_get_id(points[i]);
         float x = point_get_x(points[i]) / REDUCE_FACTOR;
         float y = point_get_y(points[i]) / REDUCE_FACTOR;
-        fprintf(file, "\t%d [pos = \"%f,%f!\", color=\"green\"];\n", id, x / REDUCE_FACTOR, y / REDUCE_FACTOR);
+        fprintf(file, "\t%d [pos = \"%f,%f!\", style=filled, label=\"\", width=0.1, height=0.1, color=\"green\"];\n", id, x / REDUCE_FACTOR, y / REDUCE_FACTOR);
     }
     // depois as constructions
     for(int i = 0; i < constructions_size; i++) {
         int id = point_get_id(constructions[i]) + graph->V;
         float x = point_get_x(constructions[i]) / REDUCE_FACTOR;
         float y = point_get_y(constructions[i]) / REDUCE_FACTOR;
-        fprintf(file, "\t%d [pos = \"%f,%f!\", color=\"red\"];\n", id, x / REDUCE_FACTOR, y / REDUCE_FACTOR);
+        fprintf(file, "\t%d [pos = \"%f,%f!\", color=\"red\", label=\"\", width=0.1, height=0.1, style=filled];\n", id, x / REDUCE_FACTOR, y / REDUCE_FACTOR);
     }
 
     if(solution != NULL) {
@@ -250,14 +250,14 @@ void graph_to_dot_solve(Graph *graph, Point** points, Point** constructions, int
             if(solution[i] == 1) {
                 Point *point = points[i];
                 int id = point_get_id(point);
-                fprintf(file, "\t%d [color=\"brown3\"];\n", id);
+                fprintf(file, "\t%d [shape=circle, width=0.5, style=filled, color=\"#006400\", fontcolor=\"#FFFFFF\", fillcolor=\"#006400\"];\n", id);
 
-                // desenha uma aresta em todos os pontos que estão no raio de alcance de 100
+                //desenha uma aresta em todos os pontos que estão no raio de alcance de 100
                 for(int j = 0; j < constructions_size; j++) {
                     Point *construction = constructions[j];
-                    if(point_in_range(point, construction, 100, eucledian)) {
+                    if(point_in_range(point, construction, range, eucledian)) {
                         int id = point_get_id(construction) + graph->V;
-                        fprintf(file, "\t%d [color=\"blue\"];\n", id);
+                        fprintf(file, "\t%d [color=\"red\"];\n", id);
                         fprintf(file, "\t%d -- %d [color=\"blue\"];\n", point_get_id(point), id);
                     }
                 }
@@ -271,7 +271,7 @@ void graph_to_dot_solve(Graph *graph, Point** points, Point** constructions, int
             for(int j = 0; j < i; j++) {
                 float weight = graph_get_weight(graph, i, j);
                 if(weight != 0) {
-                    fprintf(file, "\t%d -- %d [label = \"%.2f\"];\n", i + 1, j + 1, weight);
+                    fprintf(file, "\t%d -- %d\n", i + 1, j + 1);
                 }
             }
         }
@@ -280,7 +280,7 @@ void graph_to_dot_solve(Graph *graph, Point** points, Point** constructions, int
         for(int i = 0; i < graph->V; i++) {
             Node *node = graph->adjacency_list[i];
             while(node != NULL) {
-                fprintf(file, "\t%d -- %d [label = \"%.2f\"];\n", i + 1, node->target + 1, node->weight);
+                fprintf(file, "\t%d -- %d\n", i + 1, node->target + 1);
                 node = node->next;
             }
         }
