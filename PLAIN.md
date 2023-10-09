@@ -15,11 +15,11 @@ Ou seja, para nosso problema, dado um conjunto de esquinas e um conjunto de pont
 
 ## Problema do Particionamento de Conjuntos
 Definição: Dado um conjunto de elementos U e um inteiro k, o problema do particionamento de conjuntos consiste em encontrar k subconjuntos de U cuja união é igual a U.
-Ou seja, para nosso problema, dado um conjunto de esquinas e um conjunto de pontos de interesse, o problema do particionamento de conjuntos consiste em encontrar k subconjuntos de esquinas que cubram todos os pontos de interesse.
+Ou seja, para nosso problema, dado um conjunto de residencias e um inteiro k, o problema de particionamento de conjustos consiste em encontrar k esquinas que cubram todas as residências.
 
 ## Problema de empacotamento de conjuntos
 Definição: Dado um conjunto de elementos U e um inteiro k, o problema de empacotamento de conjuntos consiste em encontrar k subconjuntos de U cuja interseção é vazia.
-Ou seja, para nosso problema, dado um conjunto de esquinas e um conjunto de pontos de interesse, o problema de empacotamento de conjuntos consiste em encontrar k subconjuntos de esquinas que cubram todos os pontos de interesse.
+ou seja, para nosso problema, dado um conjunto de residencias e um inteiro k, o problema do empacotamento de conjuntos consiste em encontrar k esquinas de forma que duas esquinas não cubram a mesma residencia.
 
 ## Problema de cobertura de vértices
 Definição: Dado um grafo G = (V, E), o problema de cobertura de vértices consiste em encontrar o menor subconjunto de V cuja união é igual a E.
@@ -28,64 +28,31 @@ Definição: Dado um grafo G = (V, E), o problema de cobertura de vértices cons
 Definição: Dado um grafo G = (V, E), o problema de empacotamento de vértices consiste em encontrar o maior subconjunto de V cuja interseção é vazia.
 
 ## Modelando o problema para que cada esquina (vértice) cubra todas as residencias (pontos de interesse)
+Ref: http://www.mat.uc.pt/~jsoares/teaching/oc/1112/RelatorioOC.pdf
 
-### Entrada
-- Grafo G = (V, E) // V = {v1, v2, ..., vn} e E = {e1, e2, ..., em} V = Esquinas e E = Ruas
-- Conjunto de pontos de interesse P = {p1, p2, ..., pk} // P = {p1, p2, ..., pk} P = Pontos de interesse
-- Int r // r = 1, 2, ..., r r = Raio de cobertura de cada esquina
+*Entrada:*
+- Grafo G = (V, E) onde V = {v1, v2, ..., vn} e E = {e1, e2, ..., em}. V representa as esquinas e E representa as ruas.
+- Conjunto de pontos de interesse P = {p1, p2, ..., pk} onde P representa os pontos de interesse.
+- Inteiro r ≥ 0 onde r é o raio de cobertura de cada esquina.
 
-### Saída
-- Conjunto de esquinas C = {c1, c2, ..., cl} // C = {c1, c2, ..., cl} C = Esquinas que cobrem todos os pontos de interesse
+*Saída:*
+- Conjunto de esquinas C = {c1, c2, ..., cl} onde C representa as esquinas que cobrem todos os pontos de interesse.
 
-### Restrições
-- Cada esquina só pode cobrir pontos de interesse que estejam a uma distância r
+*Restrições:*
+1. A soma de Xij para todo i de 1 a l deve ser maior ou igual a 1 para todo j de 1 a k.
+   - Cada ponto de interesse deve ser coberto por no mínimo uma esquina.
 
-### Função objetivo
-- Minimizar o número de esquinas que cubram todos os pontos de interesse
+2. Xij = 0 se a distância entre a esquina i e o ponto de interesse j for maior que r.
 
-### Variáveis de decisão
-- Variável binária xij = 1 se a esquina i cobre o ponto de interesse j e 0 caso contrário
+3. Xij = 1 se a distância entre a esquina i e o ponto de interesse j for menor ou igual a r.
 
-### Modelo matemático
-- Minimizar a função objetivo
-- Sujeito a:
-    - Somatório de xij = 1 para todo j = 1, 2, ..., k
-    - Somatório de xij <= 1 para todo i = 1, 2, ..., l
-    - xij = 0 se a distância entre a esquina i e o ponto de interesse j for maior que r
-    - xij = 1 se a distância entre a esquina i e o ponto de interesse j for menor ou igual a r
+*Função Objetivo:*
+Minimizar o número de esquinas que cubram todos os pontos de interesse.
 
+*Variáveis de Decisão:*
+Variável binária Xij é igual a 1 se a esquina i cobre o ponto de interesse j e 0 caso contrário.
 
-Seja Sj o subconjunto de esquinas que cobrem o ponto de interesse j, então: Sj = {i | xij = 1}
+Solução: 0 1 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 1 0 0 0 0
 
-## Modelando o problema para que cada esquina (vértice) cubra todas as residencias (pontos de interesse) e cada esquina tenha um custo de instalação
-
-### Entrada
-- Grafo G = (V, E) // V = {v1, v2, ..., vn} e E = {e1, e2, ..., em} V = Esquinas e E = Ruas
-- Conjunto de pontos de interesse P = {p1, p2, ..., pk} // P = {p1, p2, ..., pk} P = Pontos de interesse
-- Int r // r = 1, 2, ..., r r = Raio de cobertura de cada esquina
-- Int c // c = 1, 2, ..., c c = Custo de instalação de cada esquina
-
-### Saída
-- Conjunto de esquinas C = {c1, c2, ..., cl} // C = {c1, c2, ..., cl} C = Esquinas que cubram todos os pontos de interesse
-
-### Restrições
-- Cada esquina só pode cobrir pontos de interesse que estejam a uma distância r
-
-### Função objetivo
-- Minimizar o custo total de instalação das esquinas que cubram todos os pontos de interesse
-
-### Variáveis de decisão
-- Variável binária xij = 1 se a esquina i cobre o ponto de interesse j e 0 caso contrário
-
-### Modelo matemático
-- Minimizar a função objetivo
-- Sujeito a:
-    - Somatório de xij = 1 para todo j = 1, 2, ..., k
-    - Somatório de xij <= 1 para todo i = 1, 2, ..., l
-    - xij = 0 se a distância entre a esquina i e o ponto de interesse j for maior que r
-    - xij = 1 se a distância entre a esquina i e o ponto de interesse j for menor ou igual a r
-
-0 1 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 1 0 0 0 0
-2
-13
-23
+Vértices = {2, 13, 23}
+Pesquisa Local Iterada (ILS), Recozimento Simulado (SA) e Pesquisa de Vizinhança Variável (VNS); e dois algoritmos baseados em população: Algoritmo Genético (GA) e Otimização por Enxame de Partículas (PSO).
