@@ -4,17 +4,12 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <time.h>
+#include "../greedy_set_cover/greedy_set_cover.h"
 
-#define MAX_ITERATIONS 1e4
+#define MAX_ITERATIONS 1e3
 
 
 bool all_covered(int **A, int m, int n, int coverage[]);
-
-int evaluate_coverage(int **A, int m, int n, int coverage[]);
-
-int evaluate_without_element(int **A, int m, int n, int coverage[], int index);
-
-int* generate_neighbor(int **A, int m, int n, int *current_solution);
 
 int* find_minimal_coverage(int **A, int m, int n);
 

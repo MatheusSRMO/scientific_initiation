@@ -21,7 +21,7 @@ int main(int argc, char const *argv[]) {
         printf("Usage: %s <input_file_name> <range>\n", argv[0]);
         exit(1);
     }
-    char *input_file_name = malloc(strlen(argv[1]) * sizeof(char));
+    char *input_file_name = malloc((strlen(argv[1]) + 1) * sizeof(char));
     strcpy(input_file_name, argv[1]);
     int range = atoi(argv[2]);
 
