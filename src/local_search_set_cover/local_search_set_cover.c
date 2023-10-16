@@ -29,50 +29,48 @@ bool all_covered(int **A, int m, int n, int coverage[]) {
 }
 
 
-int fitness(int** A, int* X, int m, int n) {
+int fitness(int** A, int* X, int m, int n, int *coverage) {
     if (!all_covered(A, m, n, X)) return 99999999;
 
-    int uncovered = 0;
+    int C = 0; // Número de conjuntos utilizados
+    int R = 0; // Número de elementos cobertos por mais de um conjunto
+    int T = 0; // Número total de elementos
+
     for (int i = 0; i < m; i++) {
-        int sum = 0;
+        coverage[i] = 0;
         for (int j = 0; j < n; j++) {
-            sum += A[i][j] * X[j];
+            if (A[i][j] == 1) {
+                T++;
+                if (X[j] == 1) {
+                    coverage[i]++;
+                }
+            }
         }
-        uncovered += sum;
-    }
-
-    int C = 0;
-    for (int i = 0; i < n; i++) {
-        C += X[i];
-    }
-
-    // Adiciona penalidade para elementos cobertos mais de uma vez
-    int penalty = 0;
-    for (int i = 0; i < n; i++) {
-        if (X[i] > 1) {
-            penalty += (X[i] - 1); // A penalidade é proporcional à quantidade de vezes que o elemento é coberto
+        if (coverage[i] > 1) {
+            R += coverage[i] - 1;
         }
+        C += (coverage[i] > 0);
     }
 
-    return uncovered + C + penalty;
+    return C*C + R - T;
 }
+
+
 
 
 // Which solution is better?
-bool better(int* X1, int* X2, int** A, int m, int n) {
-    return fitness(A, X1, m, n) < fitness(A, X2, m, n);
+bool better(int* X1, int* X2, int** A, int m, int n, int* coverage) {
+    return fitness(A, X1, m, n, coverage) < fitness(A, X2, m, n, coverage);
 }
 
-bool better_or_equal(int* X1, int* X2, int** A, int m, int n) {
-    return fitness(A, X1, m, n) <= fitness(A, X2, m, n);
+bool better_or_equal(int* X1, int* X2, int** A, int m, int n, int* coverage) {
+    return fitness(A, X1, m, n, coverage) <= fitness(A, X2, m, n, coverage);
 }
 
 
 // Find the best neighbor
-int* best_neighbor(int* X, int** A, int m, int n) {
-    int* best = (int*)malloc(n * sizeof(int));
-    int* temp = (int*)malloc(n * sizeof(int));
-
+void best_neighbor(int* X, int** A, int m, int n, int* best, int* temp, int* coverage) {
+    
     // Inicializa o 'melhor' com os valores de X
     for (int i = 0; i < n; i++) {
         best[i] = X[i];
@@ -88,39 +86,43 @@ int* best_neighbor(int* X, int** A, int m, int n) {
                 temp[j] = X[j];
             }
         }
+        bool is_better_or_equal = better_or_equal(temp, best, A, m, n, coverage);
+        // printf("Better? %d -> ", is_better_or_equal);
+        // print_vector(temp, n);
 
-        if (better_or_equal(temp, best, A, m, n)) {
+        if (is_better_or_equal) {
             for (int k = 0; k < n; k++) {
                 best[k] = temp[k];
             }
         }
     }
-
-    free(temp);
-    return best;
 }
 
 
 int* set_cover(int** A, int* X, int m, int n) {
+    int* best = (int*)malloc(n * sizeof(int));
+    int* temp = (int*)malloc(n * sizeof(int));
+    int* coverage = (int*)malloc(m * sizeof(int)); // Agora aloca para m (número de conjuntos)
+
     int iterations = 0;
-    int no_improvement_counter = 0;
 
-    while (iterations < MAX_ITERATIONS && no_improvement_counter < 20) {
-        int* Y = best_neighbor(X, A, m, n);
-        // print_vector(Y, n);
+    while (iterations < MAX_ITERATIONS) {
+        best_neighbor(X, A, m, n, best, temp, coverage);
+        print_vector(best, n);
 
-        if (!better(Y, X, A, m, n)) {
-            no_improvement_counter++; // Incrementa o contador se não houver melhora
-            printf("No improvement: %d\n", no_improvement_counter);
-            free(Y);
-            continue;
+        if (!better(best, X, A, m, n, coverage)) {
+            break;
         } 
 
-        no_improvement_counter = 0; // Reseta o contador se houver melhora
-        free(X);
-        X = Y;
+        for (int i = 0; i < n; i++) {
+            X[i] = best[i];
+        }
         iterations++;
     }
+
+    free(temp);
+    free(best);
+    free(coverage);
 
     return X;
 }
