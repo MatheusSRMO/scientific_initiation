@@ -40,8 +40,7 @@ int main(int argc, char const *argv[]) {
     Point **constructions_list = scp_file_constructs_to_points_list(file_handler);
 
 
-    // range of coverage
-    // int range = 300;
+    // Set line and column dimensions
     int lines = constructions_dimension;
     int columns = dimension;
 

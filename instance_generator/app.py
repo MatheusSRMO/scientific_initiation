@@ -272,13 +272,13 @@ def write_scp_file(place_name, graph, coords_nodes, coords_buildings):
     """
     """
         Format:
-        NAME: <string>
-        TYPE: SCP
-        COMMENT: <string>
-        DIMENSION: <int>
-        EDGES_DIMENSION: <int>
-        CONSTRUCTIONS_DIMENSION: <int>
-        EDGE_WEIGHT_TYPE: EUC_2D
+        NAME : <string>
+        TYPE : SCP
+        COMMENT : <string>
+        DIMENSION : <int>
+        EDGES_DIMENSION : <int>
+        CONSTRUCTIONS_DIMENSION : <int>
+        EDGE_WEIGHT_TYPE : EUC_2D
         NODE_COORD_SECTION
         <int> <float> <float>
         <int> <float> <float>
@@ -297,16 +297,16 @@ def write_scp_file(place_name, graph, coords_nodes, coords_buildings):
     """
     formatted_place_name = format_place_name(place_name)
 
-    with open(f'outputs/scp/{formatted_place_name}.scp', 'w') as file:
-        file.write(f'NAME: {place_name}\n')
-        file.write('TYPE: SCP\n')
-        file.write('COMMENT: \n')
+    with open(f'../data/scp/{formatted_place_name}.scp', 'w') as file:
+        file.write(f'NAME : {place_name}\n')
+        file.write('TYPE : SCP\n')
+        file.write('COMMENT : \n')
         dimension = len(coords_nodes)
-        file.write('DIMENSION: ' + str(dimension) + '\n')
+        file.write('DIMENSION : ' + str(dimension) + '\n')
         edges_dimension = len(graph.edges())
-        file.write('EDGES_DIMENSION: ' + str(edges_dimension) + '\n')
-        file.write('CONSTRUCTIONS_DIMENSION: ' + str(len(coords_buildings)) + '\n')
-        file.write('EDGE_WEIGHT_TYPE: EUC_2D\n')
+        file.write('EDGES_DIMENSION : ' + str(edges_dimension) + '\n')
+        file.write('CONSTRUCTIONS_DIMENSION : ' + str(len(coords_buildings)) + '\n')
+        file.write('EDGE_WEIGHT_TYPE : EUC_2D\n')
         file.write('NODE_COORD_SECTION\n')
         
         map_node_id_to_index = {}
@@ -362,5 +362,5 @@ if __name__ == '__main__':
 
     # Write the .tsp and .dot files
     # write_tsp_file(place_name, transformed_graph_nodes, transformed_building_centroids)
-    write_dot_file(place_name, graph)
+    # write_dot_file(place_name, graph)
     write_scp_file(place_name, graph, transformed_graph_nodes, transformed_building_centroids)

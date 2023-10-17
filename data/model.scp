@@ -1,0 +1,22 @@
+NAME: <string>
+TYPE: SCP
+COMMENT: <string>
+DIMENSION: <int>
+EDGES_DIMENSION: <int>
+CONSTRUCTIONS_DIMENSION: <int>
+EDGE_WEIGHT_TYPE: EUC_2D
+NODE_COORD_SECTION
+<int> <float> <float>
+<int> <float> <float>
+...
+<int> <float> <float>
+EDGES_SECTION
+<int> <int>
+<int> <int>
+...
+<int> <int>
+CONSTRUCTIONS_SECTION // id, x, y
+<int> <float> <float>
+<int> <float> <float>
+...
+<int> <float> <float>
