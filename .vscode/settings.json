@@ -1,21 +1,3 @@
 {
-    "files.associations": {
-        "vector.h": "c",
-        "*.tcc": "c",
-        "string": "c",
-        "string_view": "c",
-        "graph.h": "c",
-        "stdlib.h": "c",
-        "file_handler.h": "c",
-        "kruskal.h": "c",
-        "cmath": "c",
-        "complex": "c",
-        "set_covering.h": "c",
-        "edge_list.h": "c",
-        "array": "c",
-        "initializer_list": "c",
-        "utility": "c",
-        "point.h": "c",
-        "local_search_set_cover.h": "c"
-    }
+    "C_Cpp.errorSquiggles": "disabled"
 }

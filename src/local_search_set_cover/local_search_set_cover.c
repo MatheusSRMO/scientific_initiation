@@ -28,73 +28,51 @@ bool all_covered(int **A, int m, int n, int coverage[]) {
     return true; // Se todos os elementos foram cobertos, retorna verdadeiro (true)
 }
 
-
-int fitness(int** A, int* X, int m, int n, int *coverage) {
-    if (!all_covered(A, m, n, X)) return 99999999;
-
-    int C = 0; // Número de conjuntos utilizados
-    int R = 0; // Número de elementos cobertos por mais de um conjunto
-    int T = 0; // Número total de elementos
-
-    for (int i = 0; i < m; i++) {
-        coverage[i] = 0;
-        for (int j = 0; j < n; j++) {
-            if (A[i][j] == 1) {
-                T++;
-                if (X[j] == 1) {
-                    coverage[i]++;
-                }
-            }
-        }
-        if (coverage[i] > 1) {
-            R += coverage[i] - 1;
-        }
-        C += (coverage[i] > 0);
+// Fitness = NrOfUncoveredElements+|C|
+int fitness(int** A, int* X, int m, int n) {
+    int cont = 0;
+    for(int i = 0; i < n; i++) {
+        cont += X[i];
     }
 
-    return C*C + R - T;
+    for(int i = 0; i < m; i++) {
+        bool covered = false;
+        for(int j = 0; j < n; j++) {
+            if(A[i][j] == 1 && X[j] == 1) {
+                covered = true;
+                break;
+            }
+        }
+        cont += !covered;
+    }
+
+    return cont;
 }
 
-
-
-
-// Which solution is better?
-bool better(int* X1, int* X2, int** A, int m, int n, int* coverage) {
-    return fitness(A, X1, m, n, coverage) < fitness(A, X2, m, n, coverage);
+bool better(int* X1, int* X2, int** A, int m, int n) {
+    return fitness(A, X1, m, n) < fitness(A, X2, m, n);
 }
 
-bool better_or_equal(int* X1, int* X2, int** A, int m, int n, int* coverage) {
-    return fitness(A, X1, m, n, coverage) <= fitness(A, X2, m, n, coverage);
+bool better_or_equal(int* X1, int* X2, int** A, int m, int n) {
+    return fitness(A, X1, m, n) <= fitness(A, X2, m, n);
 }
 
-
-// Find the best neighbor
-void best_neighbor(int* X, int** A, int m, int n, int* best, int* temp, int* coverage) {
+void best_neighbor(int* X, int** A, int m, int n, int* best, int* temp) {
     
     // Inicializa o 'melhor' com os valores de X
-    for (int i = 0; i < n; i++) {
-        best[i] = X[i];
-    }
+    memcpy(best, X, n * sizeof(int));
 
-    // Verifica se o vizinho é melhor que o atual
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            if (j == i) {
-                temp[j] = 1 - X[j];
-            }
-            else {
-                temp[j] = X[j];
-            }
-        }
-        bool is_better_or_equal = better_or_equal(temp, best, A, m, n, coverage);
-        // printf("Better? %d -> ", is_better_or_equal);
-        // print_vector(temp, n);
+    // Cria uma cópia temporária de X
+    memcpy(temp, X, n * sizeof(int));
 
-        if (is_better_or_equal) {
-            for (int k = 0; k < n; k++) {
-                best[k] = temp[k];
-            }
+    for (int i = 0; i < n; i++) {
+        temp[i] = 1 - temp[i]; // Troca o valor de temp[i]
+
+        if (better_or_equal(temp, best, A, m, n)) {
+            memcpy(best, temp, n * sizeof(int)); // Atualiza o 'melhor'
         }
+
+        temp[i] = 1 - temp[i]; // Restaura o valor original de temp[i]
     }
 }
 
@@ -102,55 +80,35 @@ void best_neighbor(int* X, int** A, int m, int n, int* best, int* temp, int* cov
 int* set_cover(int** A, int* X, int m, int n) {
     int* best = (int*)malloc(n * sizeof(int));
     int* temp = (int*)malloc(n * sizeof(int));
-    int* coverage = (int*)malloc(m * sizeof(int)); // Agora aloca para m (número de conjuntos)
 
     int iterations = 0;
 
     while (iterations < MAX_ITERATIONS) {
-        best_neighbor(X, A, m, n, best, temp, coverage);
-        print_vector(best, n);
+        best_neighbor(X, A, m, n, best, temp);
+        // print_vector(best, n);
 
-        if (!better(best, X, A, m, n, coverage)) {
-            break;
-        } 
+        if (!better(best, X, A, m, n)) break;
 
-        for (int i = 0; i < n; i++) {
-            X[i] = best[i];
-        }
+        memcpy(X, best, n * sizeof(int));
+
         iterations++;
     }
 
     free(temp);
     free(best);
-    free(coverage);
 
     return X;
 }
 
 
 
+
 // Função principal para encontrar a cobertura mínima
-int* find_minimal_coverage(int **A, int m, int n) {
-    srand(time(NULL));
+int* local_search_set_cover(int **A, int m, int n) {
+    // Encontra a solução inicial
+    int *current_solution = greedy_set_cover(A, m, n);
 
-    int *current_solution = greedy_set_cover(A, m, n); // Solução inicial
-    // int *current_solution = (int*)malloc(n * sizeof(int));
-    // for (int i = 0; i < n; i++) {
-    //     current_solution[i] = 1;
-    // }
-
-    // Mostra a solução inicial
-    printf("Solução inicial: ");
-    int i, cont = 0;
-    for (i = 0; i < n; i++) {
-        printf("%d ", current_solution[i]);
-        if (current_solution[i] == 1) {
-            cont++;
-        }
-    }
-    printf("\n");
-    printf("Number of sets: %d\n", cont);
-
+    // Encontra a solução final
     int *X = set_cover(A, current_solution, m, n); // Solução final
     return X;
 }

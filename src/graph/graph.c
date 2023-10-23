@@ -242,7 +242,7 @@ void graph_to_dot_solve(Graph *graph, Point** points, Point** constructions, int
         int id = point_get_id(constructions[i]) + graph->V;
         float x = point_get_x(constructions[i]) / REDUCE_FACTOR;
         float y = point_get_y(constructions[i]) / REDUCE_FACTOR;
-        fprintf(file, "\t%d [pos = \"%f,%f!\", color=\"red\", label=\"\", width=0.1, height=0.1, style=filled];\n", id, x / REDUCE_FACTOR, y / REDUCE_FACTOR);
+        fprintf(file, "\t%d [pos = \"%f,%f!\", color=\"#FFD700\", label=\"\", width=0.15, height=0.15, style=filled];\n", id, x / REDUCE_FACTOR, y / REDUCE_FACTOR);
     }
 
     if(solution != NULL) {
@@ -257,7 +257,7 @@ void graph_to_dot_solve(Graph *graph, Point** points, Point** constructions, int
                     Point *construction = constructions[j];
                     if(point_in_range(point, construction, range, eucledian)) {
                         int id = point_get_id(construction) + graph->V;
-                        fprintf(file, "\t%d [color=\"red\"];\n", id);
+                        fprintf(file, "\t%d [color=\"red\", width=0.1, height=0.1];\n", id);
                         fprintf(file, "\t%d -- %d [color=\"blue\"];\n", point_get_id(point), id);
                     }
                 }

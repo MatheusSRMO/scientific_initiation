@@ -13,17 +13,20 @@ void print_constructions(Point **constructions_list, int constructions_dimension
 int **build_matrix_A(Point **constructions_list, Point **points_list, int constructions_dimension, int dimension, int range);
 void print_matrix(int **matrix, int lines, int columns);
 void print_solution(int *solution, int columns);
+int cont_sets(int *solution, int columns);
 
 
 int main(int argc, char const *argv[]) {
     // recebe o nome do arquivo de entrada e o raio de cobertura
-    if(argc < 3) {
-        printf("Usage: %s <input_file_name> <range>\n", argv[0]);
+    if(argc < 4) {
+        printf("Usage: %s <input_file_name> <range> <greedy|local_search>\n", argv[0]);
         exit(1);
     }
     char *input_file_name = malloc((strlen(argv[1]) + 1) * sizeof(char));
     strcpy(input_file_name, argv[1]);
     int range = atoi(argv[2]);
+    char *method = malloc((strlen(argv[3]) + 1) * sizeof(char));
+    strcpy(method, argv[3]);
 
     // char* input_file_name = "data/scp/jardim_da_penha_vitoria_es_brasil.scp";
 
@@ -33,9 +36,9 @@ int main(int argc, char const *argv[]) {
     int dimension = file_handler_get_dimension(file_handler);
     int edges_dimension = file_handler_get_edges_dimension(file_handler);
     int constructions_dimension = file_handler_get_constructions_dimension(file_handler);
-    printf("Dimension: %d\n", dimension);
-    printf("Edges dimension: %d\n", edges_dimension);
-    printf("Constructions dimension: %d\n", constructions_dimension);
+    // printf("Dimension: %d\n", dimension);
+    // printf("Edges dimension: %d\n", edges_dimension);
+    // printf("Constructions dimension: %d\n", constructions_dimension);
     Point **points_list = scp_file_nodes_to_points_list(file_handler);
     Point **constructions_list = scp_file_constructs_to_points_list(file_handler);
 
@@ -48,28 +51,36 @@ int main(int argc, char const *argv[]) {
     // builds coverage matrix A
     int **A = build_matrix_A(constructions_list, points_list, constructions_dimension, dimension, range);
 
+    int* solution = NULL;
+    if(strcmp(method, "--greedy") == 0) {
+        solution = greedy_set_cover(A, lines, columns);
+    }
+    else if(strcmp(method, "--local_search") == 0) {
+        solution = local_search_set_cover(A, lines, columns);
+    }
+    else {
+        printf("Invalid method\n");
+        exit(1);
+    }
+    printf("%d", cont_sets(solution, columns));
 
-    // find vector solution to cover all points
-    int* solution = find_minimal_coverage(A, lines, columns);
-    print_solution(solution, columns);
+
+    // // Generate graph and edge list
+    // Graph *graph = graph_create(dimension, adj_matrix);
+    // EdgeList *edge_list = edge_list_create(edges_dimension);
+    // file_handler_to_edge_list(file_handler, edge_list);
+    // graph_from_edge_list(graph, edge_list);
 
 
-    // Generate graph and edge list
-    Graph *graph = graph_create(dimension, adj_matrix);
-    EdgeList *edge_list = edge_list_create(edges_dimension);
-    file_handler_to_edge_list(file_handler, edge_list);
-    graph_from_edge_list(graph, edge_list);
-
-
-    // Generate graph.dot and graph.jpg
-    graph_to_dot_solve(graph, points_list, constructions_list, constructions_dimension, solution, columns, range, "graph.dot");
-    system("neato -Tjpg graph.dot -o graph.jpg");
-    remove("graph.dot"); // delete graph.dot
+    // // Generate graph.dot and graph.jpg
+    // graph_to_dot_solve(graph, points_list, constructions_list, constructions_dimension, solution, columns, range, "graph.dot");
+    // system("neato -Tjpg graph.dot -o graph.jpg");
+    // remove("graph.dot"); // delete graph.dot
 
 
     /* Frees Allocated Memory */
-    edge_list_destroy(edge_list);
-    graph_destroy(graph);
+    // edge_list_destroy(edge_list);
+    // graph_destroy(graph);
     for(int i = 0; i < constructions_dimension; i++) {
         free(A[i]);
     }
@@ -79,6 +90,7 @@ int main(int argc, char const *argv[]) {
     point_list_destroy(constructions_list, constructions_dimension);
     file_handler_destroy(file_handler);
     free(input_file_name);
+    free(method);
     return 0;
 }
 
@@ -131,4 +143,12 @@ void print_solution(int *solution, int columns) {
     }
     printf("\n");
     printf("Number of sets: %d\n", cont);
+}
+
+int cont_sets(int *solution, int columns) {
+    int cont = 0;
+    for(int i = 0; i < columns; i++) {
+        if(solution[i]) cont++;
+    }
+    return cont;
 }

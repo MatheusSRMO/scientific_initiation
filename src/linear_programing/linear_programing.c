@@ -1,163 +1,78 @@
 #include "linear_programing.h"
 
-typedef struct {
-    int *x; // Variáveis de decisão
-    int z;  // Valor da função objetivo
-} Solution;
+// Função para resolver o problema de cobertura de conjuntos
+// Definição:
+// A: matriz de cobertura
+// Retorna um vetor X de tamanho n, onde X[j] = 1 se a coluna j está na cobertura, e X[j] = 0 caso contrário
+// aij = 1 se o conjunto j cobre o elemento i, e 0 caso contrário
+// m = número de elementos
+// n = número de conjuntos
+// O vetor X é a solução do problema de programação linear inteira:
+// min sum(X[j]) para todo j
+// sujeito a:
+// sum(aij * X[j]) >= 1 para todo i
+// X[j] = 0 ou 1 para todo j
+// int* lp_solve(int** A, int m, int n) {
+//     CPXENVptr env = CPXopenCPLEX(NULL);
+//     CPXLPptr lp = CPXcreateprob(env, NULL, "lp_problem");
 
-LinearPrograming *linear_programing_create(int n, int m, LPObjective objective, LPConstraint constraints) {
-    LinearPrograming *lp = (LinearPrograming *) malloc(sizeof(LinearPrograming));
-    lp->n = n;
-    lp->m = m;
-    lp->solution = (int *) malloc(sizeof(int) * n);
-    for(int i = 0; i < n; i++) {
-        lp->solution[i] = 0;
-    }
-    lp->solution_size = 0;
+//     // Definir variáveis de decisão binárias
+//     int* indices = (int*)malloc(n * sizeof(int));
+//     for (int j = 0; j < n; j++) {
+//         indices[j] = j;
+//     }
+//     char* ctype = (char*)malloc(n * sizeof(char));
+//     for (int j = 0; j < n; j++) {
+//         ctype[j] = 'B'; // Variáveis binárias
+//     }
+//     CPXnewcols(env, lp, n, 0, NULL, NULL, ctype, NULL);
 
-    lp->A = (int **) malloc(sizeof(int *) * m);
-    for(int i = 0; i < m; i++) {
-        lp->A[i] = (int *) malloc(sizeof(int) * n);
-        for(int j = 0; j < n; j++) {
-            lp->A[i][j] = 0;
-        }
-    }
-    lp->b = (int *) malloc(sizeof(int) * m);
-    for(int i = 0; i < m; i++) {
-        lp->b[i] = 1; // set all b values to 1 
-    }
-    lp->c = (int *) malloc(sizeof(int) * n);
-    for(int i = 0; i < n; i++) {
-        lp->c[i] = 1; // set all c values to 1
-    }
-    lp->objective = objective;
-    lp->constraints = constraints;
-    return lp;
-}
+//     // Definir a função objetivo para minimizar a soma das variáveis
+//     double* obj = (double*)malloc(n * sizeof(double));
+//     for (int j = 0; j < n; j++) {
+//         obj[j] = 1.0;
+//     }
+//     CPXchgobj(env, lp, n, indices, obj);
 
-void linear_programing_set_objective(LinearPrograming *lp, int *c) {
-    for(int i = 0; i < lp->n; i++) {
-        lp->c[i] = c[i];
-    }
-}
+//     // Adicionar restrições
+//     for (int i = 0; i < m; i++) {
+//         int nzcnt = n;
+//         double rhs = 1.0;
+//         char sense = 'G';
+//         int rmatbeg = 0;
+//         int* rmatind = (int*)malloc(n * sizeof(int));
+//         double* rmatval = (double*)malloc(n * sizeof(double));
+//         for (int j = 0; j < n; j++) {
+//             rmatind[j] = j;
+//             rmatval[j] = A[i][j];
+//         }
+//         CPXaddrows(env, lp, 0, 1, n, &rhs, &sense, &rmatbeg, rmatind, rmatval, NULL, NULL);
+//         free(rmatind);
+//         free(rmatval);
+//     }
 
-void linear_programing_set_right_hand_side(LinearPrograming *lp, int *b) {
-    for(int i = 0; i < lp->m; i++) {
-        lp->b[i] = b[i];
-    }
-}
+//     // Resolver o problema
+//     CPXsetintparam(env, CPX_PARAM_SCRIND, CPX_ON); // Ativar saída do CPLEX
+//     CPXmipopt(env, lp);
 
-void linear_programing_set_constraint_matrix(LinearPrograming *lp, int **A) {
-    for(int i = 0; i < lp->m; i++) {
-        for(int j = 0; j < lp->n; j++) {
-            lp->A[i][j] = A[i][j];
-        }
-    }
-}
+//     // Obter solução
+//     double* sol = (double*)malloc(n * sizeof(double));
+//     CPXgetx(env, lp, sol, 0, n-1);
 
-void linear_programing_destroy(LinearPrograming *lp) {
-    for(int i = 0; i < lp->m; i++) {
-        free(lp->A[i]);
-    }
-    free(lp->A);
-    free(lp->b);
-    free(lp->c);
-    free(lp->solution);
-    free(lp);
-}
+//     // parsa a solução
+//     int *sol_int = (int*)malloc(n * sizeof(int));
+//     for (int j = 0; j < n; j++) {
+//         // printf("%d -> %d\n", j, (int)sol[j]);
+//         sol_int[j] = (int)sol[j];
+//     }
 
-Solution implicit_enumeration(int n, int m, int **A, int *b, int *c) {
-    Solution best_solution;
-    best_solution.x = (int *)malloc(sizeof(int) * n);
-    best_solution.z = INT_MIN;
+//     // Liberar memória e fechar o ambiente
+//     free(sol);
+//     free(indices);
+//     free(ctype);
+//     free(obj);
+//     CPXfreeprob(env, &lp);
+//     CPXcloseCPLEX(&env);
 
-    for (int i = 0; i < (1 << n); i++) {
-        int valid_solution = 1;
-        int *x = (int *)malloc(sizeof(int) * n);
-
-        for (int j = 0; j < n; j++) {
-            x[j] = (i >> j) & 1;
-        }
-
-        for (int j = 0; j < m; j++) {
-            int sum = 0;
-            for (int k = 0; k < n; k++) {
-                sum += A[j][k] * x[k];
-            }
-            if (sum > b[j]) {
-                valid_solution = 0;
-                break;
-            }
-        }
-
-        if (valid_solution) {
-            int z = 0;
-            for (int j = 0; j < n; j++) {
-                z += c[j] * x[j];
-            }
-            if (z > best_solution.z) {
-                best_solution.z = z;
-                memcpy(best_solution.x, x, sizeof(int) * n);
-            }
-        }
-
-        free(x);
-    }
-
-    return best_solution;
-}
-
-void calcularSolucaoOtima(int **a, int *b, int *solucao, int linhas, int colunas) {
-    int melhorSolucao[colunas];
-    int menorValor = 999999; // Valor inicial grande
-
-    int numPossibilidades = 1 << colunas; // 2 elevado ao número de colunas
-
-    for (int i = 0; i < numPossibilidades; i++) {
-        for (int j = 0; j < colunas; j++) {
-            solucao[j] = (i >> j) & 1; // Gera as possibilidades de 0 ou 1
-        }
-
-        int valorAtual = 0;
-        for (int linha = 0; linha < linhas; linha++) {
-            int somaLinha = 0;
-            for (int coluna = 0; coluna < colunas; coluna++) {
-                somaLinha += a[linha][coluna] * solucao[coluna];
-            }
-            valorAtual += (somaLinha - b[linha]) * (somaLinha - b[linha]);
-        }
-
-        if (valorAtual < menorValor) {
-            menorValor = valorAtual;
-            for (int coluna = 0; coluna < colunas; coluna++) {
-                melhorSolucao[coluna] = solucao[coluna];
-            }
-        }
-    }
-
-    for (int i = 0; i < colunas; i++) {
-        solucao[i] = melhorSolucao[i];
-    }
-}
-
-
-LPStatus lp_solve(LinearPrograming *lp) {
-    Solution solution = implicit_enumeration(lp->n, lp->m, lp->A, lp->b, lp->c);
-
-    if (solution.z != INT_MIN) {
-        for (int i = 0; i < lp->n; i++) {
-            lp->solution[i] = solution.x[i];
-        }
-        lp->solution_size = lp->n;
-        free(solution.x);
-        return LP_SUCCESS;
-    } else {
-        return LP_ERROR;
-    }
-}
-
-void linear_programing_get_solution(LinearPrograming *lp, int *solution) {
-    for(int i = 0; i < lp->n; i++) {
-        solution[i] = lp->solution[i];
-    }
-}
+//     return sol_int;
+// }
