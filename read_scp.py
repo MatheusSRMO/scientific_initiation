@@ -88,6 +88,15 @@ def construct_coverage_matrix(coverage_radius: int, nodes: list, constructions: 
                 matrix[-1].append(0)
     return matrix
 
+def read_matrix(file_path):
+    with open(file_path, "r") as file:
+        lines = file.readlines()
+        m, n = lines[0].split()
+        matrix = []
+        for i in range(1, len(lines)):
+            matrix.append([int(j) for j in lines[i].split()])
+        return matrix, int(m), int(n)
+
 def print_matrix(matrix):
     for line in matrix:
         print(line)
@@ -107,23 +116,28 @@ def cont_sets(set):
         cont += i
     return cont
 
-def execute(path, coverage_radius):
-    (
-        name,
-        comment,
-        dimension,
-        edges_dimension,
-        constructions_dimension,
-        edge_weight_type,
-        nodes,
-        edges, 
-        constructions
-    ) = read_scp(path)
+# def execute(path, coverage_radius, a):
+#     # (
+#     #     name,
+#     #     comment,
+#     #     dimension,
+#     #     edges_dimension,
+#     #     constructions_dimension,
+#     #     edge_weight_type,
+#     #     nodes,
+#     #     edges, 
+#     #     constructions
+#     # ) = read_scp(path)
     
-    A = construct_coverage_matrix(coverage_radius, nodes, constructions)
-    _set = linear_programing(A)
-    # print_set(_set)
-    return cont_sets(_set) if _set != None else 'inf'
+#     # A = construct_coverage_matrix(coverage_radius, nodes, constructions)
+#     A = read_matrix(path, a)
+#     _set = linear_programing(A)
+#     # print_set(_set)
+#     return cont_sets(_set) if _set != None else 'inf'
+
+def execute(path):
+    A, m, n = read_matrix(path)
+    return cont_sets(linear_programing(A)), n
 
 def get_dimensions(path):
     (

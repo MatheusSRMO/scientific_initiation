@@ -17,16 +17,16 @@ int cont_sets(int *solution, int columns);
 
 
 int main(int argc, char const *argv[]) {
-    // // recebe o nome do arquivo de entrada e o raio de cobertura
-    // if(argc < 4) {
-    //     printf("Usage: %s <input_file_name> <range> <greedy|local_search>\n", argv[0]);
-    //     exit(1);
-    // }
-    // char *input_file_name = malloc((strlen(argv[1]) + 1) * sizeof(char));
-    // strcpy(input_file_name, argv[1]);
-    // int range = atoi(argv[2]);
-    // char *method = malloc((strlen(argv[3]) + 1) * sizeof(char));
-    // strcpy(method, argv[3]);
+    // recebe o nome do arquivo de entrada e o raio de cobertura
+    if(argc < 4) {
+        printf("Usage: %s <input_file_name> <range> <greedy|local_search>\n", argv[0]);
+        exit(1);
+    }
+    char *input_file_name = malloc((strlen(argv[1]) + 1) * sizeof(char));
+    strcpy(input_file_name, argv[1]);
+    int range = atoi(argv[2]);
+    char *method = malloc((strlen(argv[3]) + 1) * sizeof(char));
+    strcpy(method, argv[3]);
 
     // char* input_file_name = "data/scp/jardim_da_penha_vitoria_es_brasil.scp";
 
@@ -50,11 +50,9 @@ int main(int argc, char const *argv[]) {
 
     // builds coverage matrix A
     // int **A = build_matrix_A(constructions_list, points_list, constructions_dimension, dimension, range);
-
-    char *method = "--local_search";
     
     int lines, columns;
-    int **A = read_matrix("data/OR-Library/scp41_out.txt", &lines, &columns);
+    int **A = read_matrix(input_file_name, &lines, &columns);
 
     int* solution = NULL;
     if(strcmp(method, "--greedy") == 0) {
@@ -94,8 +92,8 @@ int main(int argc, char const *argv[]) {
     // point_list_destroy(points_list, dimension);
     // point_list_destroy(constructions_list, constructions_dimension);
     // file_handler_destroy(file_handler);
-    // free(input_file_name);
-    // free(method);
+    free(input_file_name);
+    free(method);
     return 0;
 }
 

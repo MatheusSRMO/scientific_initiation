@@ -52,14 +52,15 @@ if __name__ == "__main__":
     for file in files:
         
         path = path_in + "/" + file
-        dimensions = get_dimensions(path)
+        # dimensions = get_dimensions(path)
         _results = []
         
+        a = [0, 0]
         t1 = time.time()
-        num_sets_lp = execute(path, range_coverage)
+        num_sets_lp, dimensions = execute(path)
         t2 = time.time()
         time_lp = t2 - t1
-        
+                
         _results.append(("linear_programing (py)", dimensions, num_sets_lp, time_lp))
         
         for algorithm in algorithms:
