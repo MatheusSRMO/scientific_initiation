@@ -1,71 +1,71 @@
-+--------------------------------------------+-------------------------+----------+------------------------+
-|                  Arquivo                   |        Algoritmo        | Esquinas |         Tempo          |
-+--------------------------------------------+-------------------------+----------+------------------------+
-| ariovaldo_favalessa_vitoria_es_brasil.scp  | linear_programing (py)  |    1     |  0.019223928451538086  |
-| ariovaldo_favalessa_vitoria_es_brasil.scp  |         greedy          |    1     |  0.001024007797241211  |
-| ariovaldo_favalessa_vitoria_es_brasil.scp  |      local_search       |    1     | 0.0009632110595703125  |
-| ------------------------------------------ | ----------------------- | -------- | ---------------------- |
-|      goiabeiras_vitoria_es_brasil.scp      | linear_programing (py)  |    10    |   0.7932379245758057   |
-|      goiabeiras_vitoria_es_brasil.scp      |         greedy          |    14    |  0.004400968551635742  |
-|      goiabeiras_vitoria_es_brasil.scp      |      local_search       |    13    |  0.040151119232177734  |
-| ------------------------------------------ | ----------------------- | -------- | ---------------------- |
-|    ilha_do_frade_vitoria_es_brasil.scp     | linear_programing (py)  |    3     |  0.051877498626708984  |
-|    ilha_do_frade_vitoria_es_brasil.scp     |         greedy          |    3     |  0.001054525375366211  |
-|    ilha_do_frade_vitoria_es_brasil.scp     |      local_search       |    3     | 0.0012710094451904297  |
-| ------------------------------------------ | ----------------------- | -------- | ---------------------- |
-|        jabour_vitoria_es_brasil.scp        | linear_programing (py)  |    2     |  0.10639834403991699   |
-|        jabour_vitoria_es_brasil.scp        |         greedy          |    3     |  0.001313924789428711  |
-|        jabour_vitoria_es_brasil.scp        |      local_search       |    2     | 0.0017397403717041016  |
-| ------------------------------------------ | ----------------------- | -------- | ---------------------- |
-|   jardim_da_penha_vitoria_es_brasil.scp    | linear_programing (py)  |    9     |   2.2510857582092285   |
-|   jardim_da_penha_vitoria_es_brasil.scp    |         greedy          |    15    |  0.01565241813659668   |
-|   jardim_da_penha_vitoria_es_brasil.scp    |      local_search       |    13    |  0.35898447036743164   |
-| ------------------------------------------ | ----------------------- | -------- | ---------------------- |
-|         maria_ortiz_vitoria_es.scp         | linear_programing (py)  |    4     |   2.176839590072632    |
-|         maria_ortiz_vitoria_es.scp         |         greedy          |    6     |  0.006333351135253906  |
-|         maria_ortiz_vitoria_es.scp         |      local_search       |    6     |   0.0561525821685791   |
-| ------------------------------------------ | ----------------------- | -------- | ---------------------- |
-|    mata_da_praia_vitoria_es_brasil.scp     | linear_programing (py)  |    8     |   1.654561996459961    |
-|    mata_da_praia_vitoria_es_brasil.scp     |         greedy          |    12    |  0.007481813430786133  |
-|    mata_da_praia_vitoria_es_brasil.scp     |      local_search       |    11    |  0.13414645195007324   |
-| ------------------------------------------ | ----------------------- | -------- | ---------------------- |
-|       piedade_vitoria_es_brasil.scp        | linear_programing (py)  |    1     |  0.008620977401733398  |
-|       piedade_vitoria_es_brasil.scp        |         greedy          |    1     | 0.0009355545043945312  |
-|       piedade_vitoria_es_brasil.scp        |      local_search       |    1     | 0.0008666515350341797  |
-| ------------------------------------------ | ----------------------- | -------- | ---------------------- |
-|    praia_do_canto_vitoria_es_brasil.scp    | linear_programing (py)  |    7     |   1.0943450927734375   |
-|    praia_do_canto_vitoria_es_brasil.scp    |         greedy          |    10    |  0.005372762680053711  |
-|    praia_do_canto_vitoria_es_brasil.scp    |      local_search       |    10    |  0.031096458435058594  |
-| ------------------------------------------ | ----------------------- | -------- | ---------------------- |
-|     santa_clara_vitoria_es_brasil.scp      | linear_programing (py)  |    2     |   0.0317385196685791   |
-|     santa_clara_vitoria_es_brasil.scp      |         greedy          |    2     | 0.0010600090026855469  |
-|     santa_clara_vitoria_es_brasil.scp      |      local_search       |    2     | 0.0009717941284179688  |
-| ------------------------------------------ | ----------------------- | -------- | ---------------------- |
-|     santa_helena_vitoria_es_brasil.scp     | linear_programing (py)  |    2     |  0.04260444641113281   |
-|     santa_helena_vitoria_es_brasil.scp     |         greedy          |    2     | 0.0010952949523925781  |
-|     santa_helena_vitoria_es_brasil.scp     |      local_search       |    2     | 0.0011649131774902344  |
-| ------------------------------------------ | ----------------------- | -------- | ---------------------- |
-|     santa_lucia_vitoria_es_brasil.scp      | linear_programing (py)  |    8     |   0.7025785446166992   |
-|     santa_lucia_vitoria_es_brasil.scp      |         greedy          |    9     |  0.003567934036254883  |
-|     santa_lucia_vitoria_es_brasil.scp      |      local_search       |    9     |  0.022887229919433594  |
-| ------------------------------------------ | ----------------------- | -------- | ---------------------- |
-|     santa_marta_vitoria_es_brasil.scp      | linear_programing (py)  |    1     |  0.004524707794189453  |
-|     santa_marta_vitoria_es_brasil.scp      |         greedy          |    1     | 0.0007870197296142578  |
-|     santa_marta_vitoria_es_brasil.scp      |      local_search       |    1     | 0.0008232593536376953  |
-| ------------------------------------------ | ----------------------- | -------- | ---------------------- |
-|   segurança_do_lar_vitoria_es_brasil.scp   | linear_programing (py)  |    1     |  0.020824432373046875  |
-|   segurança_do_lar_vitoria_es_brasil.scp   |         greedy          |    1     | 0.0009036064147949219  |
-|   segurança_do_lar_vitoria_es_brasil.scp   |      local_search       |    1     | 0.0009031295776367188  |
-| ------------------------------------------ | ----------------------- | -------- | ---------------------- |
-|     solon_borges_vitoria_es_brasil.scp     | linear_programing (py)  |    1     |   0.166245698928833    |
-|     solon_borges_vitoria_es_brasil.scp     |         greedy          |    1     | 0.0014524459838867188  |
-|     solon_borges_vitoria_es_brasil.scp     |      local_search       |    1     | 0.0013151168823242188  |
-| ------------------------------------------ | ----------------------- | -------- | ---------------------- |
-|      são_pedro_vitoria_es_brasil.scp       | linear_programing (py)  |    3     |   0.542877197265625    |
-|      são_pedro_vitoria_es_brasil.scp       |         greedy          |    5     | 0.0023505687713623047  |
-|      são_pedro_vitoria_es_brasil.scp       |      local_search       |    3     |  0.008171796798706055  |
-| ------------------------------------------ | ----------------------- | -------- | ---------------------- |
-|         ufes_vitoria_es_brasil.scp         | linear_programing (py)  |    5     |  0.10390853881835938   |
-|         ufes_vitoria_es_brasil.scp         |         greedy          |    7     |  0.001386880874633789  |
-|         ufes_vitoria_es_brasil.scp         |      local_search       |    7     | 0.0020682811737060547  |
-+--------------------------------------------+-------------------------+----------+------------------------+
++--------------------------------------------+------+------+------+-------------------------+----------+-----------------------+
+|                  Arquivo                   |  V   |  C   |  E   |        Algoritmo        | Esquinas |         Tempo         |
++--------------------------------------------+------+------+------+-------------------------+----------+-----------------------+
+| ariovaldo_favalessa_vitoria_es_brasil.scp  | 244  |  7   | 237  | linear_programing (py)  |    2     | 0.028716325759887695  |
+| ariovaldo_favalessa_vitoria_es_brasil.scp  | 244  |  7   | 237  |         greedy          |    2     |  0.07674622535705566  |
+| ariovaldo_favalessa_vitoria_es_brasil.scp  | 244  |  7   | 237  |      local_search       |    2     |  0.08143043518066406  |
+| ------------------------------------------ | ---- | ---- | ---- | ----------------------- | -------- | --------------------- |
+|      goiabeiras_vitoria_es_brasil.scp      | 1364 | 237  | 1127 | linear_programing (py)  |    19    |  0.7932946681976318   |
+|      goiabeiras_vitoria_es_brasil.scp      | 1364 | 237  | 1127 |         greedy          |    25    |   17.23715853691101   |
+|      goiabeiras_vitoria_es_brasil.scp      | 1364 | 237  | 1127 |      local_search       |    17    |  13.210072040557861   |
+| ------------------------------------------ | ---- | ---- | ---- | ----------------------- | -------- | --------------------- |
+|    ilha_do_frade_vitoria_es_brasil.scp     | 330  |  44  | 286  | linear_programing (py)  |    6     |  0.09580397605895996  |
+|    ilha_do_frade_vitoria_es_brasil.scp     | 330  |  44  | 286  |         greedy          |    7     |  0.3380129337310791   |
+|    ilha_do_frade_vitoria_es_brasil.scp     | 330  |  44  | 286  |      local_search       |    5     |   0.889162540435791   |
+| ------------------------------------------ | ---- | ---- | ---- | ----------------------- | -------- | --------------------- |
+|        jabour_vitoria_es_brasil.scp        | 639  |  43  | 596  | linear_programing (py)  |    3     |  0.14438295364379883  |
+|        jabour_vitoria_es_brasil.scp        | 639  |  43  | 596  |         greedy          |    4     |  0.3990211486816406   |
+|        jabour_vitoria_es_brasil.scp        | 639  |  43  | 596  |      local_search       |    4     |  0.2917213439941406   |
+| ------------------------------------------ | ---- | ---- | ---- | ----------------------- | -------- | --------------------- |
+|   jardim_da_penha_vitoria_es_brasil.scp    | 2232 | 406  | 1826 | linear_programing (py)  |    20    |   16.06122922897339   |
+|   jardim_da_penha_vitoria_es_brasil.scp    | 2232 | 406  | 1826 |         greedy          |    27    |   2.372755765914917   |
+|   jardim_da_penha_vitoria_es_brasil.scp    | 2232 | 406  | 1826 |      local_search       |    22    |   4.539798021316528   |
+| ------------------------------------------ | ---- | ---- | ---- | ----------------------- | -------- | --------------------- |
+|         maria_ortiz_vitoria_es.scp         | 3120 | 208  | 2912 | linear_programing (py)  |    8     |   6.375855922698975   |
+|         maria_ortiz_vitoria_es.scp         | 3120 | 208  | 2912 |         greedy          |    11    |  3.1492550373077393   |
+|         maria_ortiz_vitoria_es.scp         | 3120 | 208  | 2912 |      local_search       |    10    |  2.3130075931549072   |
+| ------------------------------------------ | ---- | ---- | ---- | ----------------------- | -------- | --------------------- |
+|    mata_da_praia_vitoria_es_brasil.scp     | 2153 | 276  | 1877 | linear_programing (py)  |    17    |  2.2178730964660645   |
+|    mata_da_praia_vitoria_es_brasil.scp     | 2153 | 276  | 1877 |         greedy          |    23    |   2.647214412689209   |
+|    mata_da_praia_vitoria_es_brasil.scp     | 2153 | 276  | 1877 |      local_search       |    19    |   3.728278160095215   |
+| ------------------------------------------ | ---- | ---- | ---- | ----------------------- | -------- | --------------------- |
+|       piedade_vitoria_es_brasil.scp        | 165  |  4   | 161  | linear_programing (py)  |    2     | 0.030045747756958008  |
+|       piedade_vitoria_es_brasil.scp        | 165  |  4   | 161  |         greedy          |    2     |  0.38260817527770996  |
+|       piedade_vitoria_es_brasil.scp        | 165  |  4   | 161  |      local_search       |    2     |  0.09434747695922852  |
+| ------------------------------------------ | ---- | ---- | ---- | ----------------------- | -------- | --------------------- |
+|    praia_do_canto_vitoria_es_brasil.scp    | 1501 | 317  | 1184 | linear_programing (py)  |    15    |  1.7392590045928955   |
+|    praia_do_canto_vitoria_es_brasil.scp    | 1501 | 317  | 1184 |         greedy          |    20    |   2.442129373550415   |
+|    praia_do_canto_vitoria_es_brasil.scp    | 1501 | 317  | 1184 |      local_search       |    16    |  3.6818604469299316   |
+| ------------------------------------------ | ---- | ---- | ---- | ----------------------- | -------- | --------------------- |
+|     santa_clara_vitoria_es_brasil.scp      | 339  |  14  | 325  | linear_programing (py)  |    3     |  0.05790257453918457  |
+|     santa_clara_vitoria_es_brasil.scp      | 339  |  14  | 325  |         greedy          |    3     |  0.3277440071105957   |
+|     santa_clara_vitoria_es_brasil.scp      | 339  |  14  | 325  |      local_search       |    3     |  0.1880037784576416   |
+| ------------------------------------------ | ---- | ---- | ---- | ----------------------- | -------- | --------------------- |
+|     santa_helena_vitoria_es_brasil.scp     | 237  |  45  | 192  | linear_programing (py)  |    3     | 0.044074296951293945  |
+|     santa_helena_vitoria_es_brasil.scp     | 237  |  45  | 192  |         greedy          |    4     |  0.22167301177978516  |
+|     santa_helena_vitoria_es_brasil.scp     | 237  |  45  | 192  |      local_search       |    3     |  0.24233293533325195  |
+| ------------------------------------------ | ---- | ---- | ---- | ----------------------- | -------- | --------------------- |
+|     santa_lucia_vitoria_es_brasil.scp      | 1320 | 197  | 1123 | linear_programing (py)  |    13    |  0.9057786464691162   |
+|     santa_lucia_vitoria_es_brasil.scp      | 1320 | 197  | 1123 |         greedy          |    16    |  1.0676205158233643   |
+|     santa_lucia_vitoria_es_brasil.scp      | 1320 | 197  | 1123 |      local_search       |    13    |  1.7716655731201172   |
+| ------------------------------------------ | ---- | ---- | ---- | ----------------------- | -------- | --------------------- |
+|     santa_marta_vitoria_es_brasil.scp      |  41  |  7   |  34  | linear_programing (py)  |    1     |  0.11298727989196777  |
+|     santa_marta_vitoria_es_brasil.scp      |  41  |  7   |  34  |         greedy          |    1     |  0.11488628387451172  |
+|     santa_marta_vitoria_es_brasil.scp      |  41  |  7   |  34  |      local_search       |    1     |  0.11708569526672363  |
+| ------------------------------------------ | ---- | ---- | ---- | ----------------------- | -------- | --------------------- |
+|   segurança_do_lar_vitoria_es_brasil.scp   | 150  |  27  | 123  | linear_programing (py)  |    2     |  0.03595113754272461  |
+|   segurança_do_lar_vitoria_es_brasil.scp   | 150  |  27  | 123  |         greedy          |    2     |  0.09998130798339844  |
+|   segurança_do_lar_vitoria_es_brasil.scp   | 150  |  27  | 123  |      local_search       |    2     |  0.07834458351135254  |
+| ------------------------------------------ | ---- | ---- | ---- | ----------------------- | -------- | --------------------- |
+|     solon_borges_vitoria_es_brasil.scp     | 434  |  72  | 362  | linear_programing (py)  |    2     |  0.7341518402099609   |
+|     solon_borges_vitoria_es_brasil.scp     | 434  |  72  | 362  |         greedy          |    2     |  0.4285898208618164   |
+|     solon_borges_vitoria_es_brasil.scp     | 434  |  72  | 362  |      local_search       |    1     |  0.5246520042419434   |
+| ------------------------------------------ | ---- | ---- | ---- | ----------------------- | -------- | --------------------- |
+|      são_pedro_vitoria_es_brasil.scp       | 1338 |  90  | 1248 | linear_programing (py)  |    4     |  0.4320034980773926   |
+|      são_pedro_vitoria_es_brasil.scp       | 1338 |  90  | 1248 |         greedy          |    7     |  0.7318253517150879   |
+|      são_pedro_vitoria_es_brasil.scp       | 1338 |  90  | 1248 |      local_search       |    5     |  1.1533236503601074   |
+| ------------------------------------------ | ---- | ---- | ---- | ----------------------- | -------- | --------------------- |
+|         ufes_vitoria_es_brasil.scp         | 350  | 118  | 232  | linear_programing (py)  |    10    |  0.13469481468200684  |
+|         ufes_vitoria_es_brasil.scp         | 350  | 118  | 232  |         greedy          |    12    |  0.6329727172851562   |
+|         ufes_vitoria_es_brasil.scp         | 350  | 118  | 232  |      local_search       |    7     |  0.49105286598205566  |
++--------------------------------------------+------+------+------+-------------------------+----------+-----------------------+

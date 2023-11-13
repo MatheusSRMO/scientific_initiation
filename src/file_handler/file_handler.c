@@ -394,3 +394,34 @@ Point** scp_file_nodes_to_points_list(FileHandler* file_handler) {
     }
     return point_list;
 }
+
+// not alocated matrix A, only the pointers
+/*
+Formato do arquivo:
+n m // n = número de linhas, m = número de colunas
+a11 a12 a13 ... a1m
+a21 a22 a23 ... a2m
+a31 a32 a33 ... a3m
+...
+an1 an2 an3 ... anm
+*/
+int **read_matrix(char *file_name, int *n, int *m) {
+    FILE *file = fopen(file_name, "r");
+    if (file == NULL) {
+        printf("Error: could not open file %s\n", file_name);
+        exit(1);
+    }
+    fscanf(file, "%d %d", n, m);
+    int **A = calloc(*n, sizeof(int*));
+    for(int i = 0; i < *n; i++) {
+        A[i] = calloc(*m, sizeof(int));
+    }
+    for(int i = 0; i < *n; i++) {
+        for(int j = 0; j < *m; j++) {
+            fscanf(file, "%d", &A[i][j]);
+        }
+    }
+    fclose(file);
+    return A;
+}
+

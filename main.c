@@ -17,39 +17,44 @@ int cont_sets(int *solution, int columns);
 
 
 int main(int argc, char const *argv[]) {
-    // recebe o nome do arquivo de entrada e o raio de cobertura
-    if(argc < 4) {
-        printf("Usage: %s <input_file_name> <range> <greedy|local_search>\n", argv[0]);
-        exit(1);
-    }
-    char *input_file_name = malloc((strlen(argv[1]) + 1) * sizeof(char));
-    strcpy(input_file_name, argv[1]);
-    int range = atoi(argv[2]);
-    char *method = malloc((strlen(argv[3]) + 1) * sizeof(char));
-    strcpy(method, argv[3]);
+    // // recebe o nome do arquivo de entrada e o raio de cobertura
+    // if(argc < 4) {
+    //     printf("Usage: %s <input_file_name> <range> <greedy|local_search>\n", argv[0]);
+    //     exit(1);
+    // }
+    // char *input_file_name = malloc((strlen(argv[1]) + 1) * sizeof(char));
+    // strcpy(input_file_name, argv[1]);
+    // int range = atoi(argv[2]);
+    // char *method = malloc((strlen(argv[3]) + 1) * sizeof(char));
+    // strcpy(method, argv[3]);
 
     // char* input_file_name = "data/scp/jardim_da_penha_vitoria_es_brasil.scp";
 
 
-    // Create file handler
-    FileHandler *file_handler = file_handler_create(input_file_name, scp);
-    int dimension = file_handler_get_dimension(file_handler);
-    int edges_dimension = file_handler_get_edges_dimension(file_handler);
-    int constructions_dimension = file_handler_get_constructions_dimension(file_handler);
-    // printf("Dimension: %d\n", dimension);
-    // printf("Edges dimension: %d\n", edges_dimension);
-    // printf("Constructions dimension: %d\n", constructions_dimension);
-    Point **points_list = scp_file_nodes_to_points_list(file_handler);
-    Point **constructions_list = scp_file_constructs_to_points_list(file_handler);
+    // // Create file handler
+    // FileHandler *file_handler = file_handler_create(input_file_name, scp);
+    // int dimension = file_handler_get_dimension(file_handler);
+    // int edges_dimension = file_handler_get_edges_dimension(file_handler);
+    // int constructions_dimension = file_handler_get_constructions_dimension(file_handler);
+    // // printf("Dimension: %d\n", dimension);
+    // // printf("Edges dimension: %d\n", edges_dimension);
+    // // printf("Constructions dimension: %d\n", constructions_dimension);
+    // Point **points_list = scp_file_nodes_to_points_list(file_handler);
+    // Point **constructions_list = scp_file_constructs_to_points_list(file_handler);
 
 
-    // Set line and column dimensions
-    int lines = constructions_dimension;
-    int columns = dimension;
+    // // Set line and column dimensions
+    // int lines = constructions_dimension;
+    // int columns = dimension;
 
 
     // builds coverage matrix A
-    int **A = build_matrix_A(constructions_list, points_list, constructions_dimension, dimension, range);
+    // int **A = build_matrix_A(constructions_list, points_list, constructions_dimension, dimension, range);
+
+    char *method = "--local_search";
+    
+    int lines, columns;
+    int **A = read_matrix("data/OR-Library/scp41_out.txt", &lines, &columns);
 
     int* solution = NULL;
     if(strcmp(method, "--greedy") == 0) {
@@ -78,19 +83,19 @@ int main(int argc, char const *argv[]) {
     // remove("graph.dot"); // delete graph.dot
 
 
-    /* Frees Allocated Memory */
+    // /* Frees Allocated Memory */
     // edge_list_destroy(edge_list);
     // graph_destroy(graph);
-    for(int i = 0; i < constructions_dimension; i++) {
+    for(int i = 0; i < lines; i++) {
         free(A[i]);
     }
     free(A);
     free(solution);
-    point_list_destroy(points_list, dimension);
-    point_list_destroy(constructions_list, constructions_dimension);
-    file_handler_destroy(file_handler);
-    free(input_file_name);
-    free(method);
+    // point_list_destroy(points_list, dimension);
+    // point_list_destroy(constructions_list, constructions_dimension);
+    // file_handler_destroy(file_handler);
+    // free(input_file_name);
+    // free(method);
     return 0;
 }
 

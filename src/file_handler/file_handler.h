@@ -44,4 +44,6 @@ void tsp_file_reader(FILE* file, FileHandler* file_handler);
 
 void file_handler_write_mst(FileHandler* file_handler, EdgeList* mst_list);
 
+int **read_matrix(char *file_name, int *n, int *m);
+
 #endif // _CVRP_IO_FILE_H_

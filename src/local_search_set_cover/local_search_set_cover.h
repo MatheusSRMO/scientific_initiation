@@ -7,8 +7,9 @@
 #include <string.h>
 #include <stdbool.h>
 #include "../greedy_set_cover/greedy_set_cover.h"
+#include "../utils/utils.h"
 
-#define MAX_ITERATIONS 1e3
+#define MAX_ITERATIONS 1e5
 
 
 bool all_covered(int **A, int m, int n, int coverage[]);

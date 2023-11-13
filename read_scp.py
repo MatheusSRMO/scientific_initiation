@@ -125,6 +125,20 @@ def execute(path, coverage_radius):
     # print_set(_set)
     return cont_sets(_set) if _set != None else 'inf'
 
+def get_dimensions(path):
+    (
+        name,
+        comment,
+        dimension,
+        edges_dimension,
+        constructions_dimension,
+        edge_weight_type,
+        nodes,
+        edges, 
+        constructions
+    ) = read_scp(path)
+    return dimension + constructions_dimension, dimension, constructions_dimension
+
 def main():
     path_scp = sys.argv[1]
     coverage_radius = int(sys.argv[2])
