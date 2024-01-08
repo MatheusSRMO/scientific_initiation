@@ -22,7 +22,6 @@ int main() {
     const int tabu_size = 1e1;
 
 
-
     /* =================== OPEN SCP FILE =================== */
     ScpFileReader scp_file_reader(file_path);
     scp_file_reader.read_file();
@@ -58,6 +57,8 @@ int main() {
     LocalSearch local_search(matrix, max_iterations, tabu_size, greedy_solution);
     local_search.run(current_solution);
 
+
+    /* =================== SHOW RESULT =================== */
     cout << "greedy_solution.fitness_score: " << greedy_solution.fitness(matrix) << endl;
     cout << "current_solution.fitness_score: " << current_solution.fitness(matrix) << endl;
 

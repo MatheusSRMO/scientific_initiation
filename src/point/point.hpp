@@ -4,10 +4,8 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
-#include <SFML/Graphics.hpp>
 
 using namespace std;
-using namespace sf;
 
 /**
  * @brief Represents a point in a 2D space.
@@ -127,9 +125,6 @@ class Point {
          * @return The Point with the specified ID, or a default-constructed Point if not found.
          */
         static Point find_by_id(const vector<Point>& points, const int id);
-
-        void draw(RenderWindow& window, float radius, Color color) const;
-
 
         friend std::ostream& operator<<(std::ostream& os, const Point& point);
         friend std::istream& operator>>(std::istream& is, Point& point);

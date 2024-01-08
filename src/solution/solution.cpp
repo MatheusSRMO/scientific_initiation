@@ -105,6 +105,7 @@ int Solution::fitness(Matrix &matrix) {
     return this->fitness_score;
 }
 
+
 // A Ideia é olhar apenas para o subconjunto que foi alterado, e não para todos os subconjuntos
 void Solution::fitness_with_cache(Matrix &matrix, Solution &old_solution, int j) {
     bool current_value = this->get(j);
@@ -148,15 +149,6 @@ bool Solution::is_feasible(Matrix &matrix) {
     return this->num_of_elements_uncovered(matrix) == 0;
 }
 
-void Solution::draw(RenderWindow &window, vector<Point> &graph_points, double range) {
-    for (int i = 0; i < (int)this->V.size(); i++) {
-        if (this->V[i]) {
-            Point &point = graph_points[i];
-            point.draw(window, range, Color(0, 255, 0, 50));
-            point.draw(window, 3, Color(0, 255, 0));
-        }
-    }
-}
 
 // Complexity: O(n), where n is the number of elements
 vector<Solution> Solution::get_neighbors(Matrix &matrix) {

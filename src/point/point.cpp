@@ -62,15 +62,6 @@ Point Point::find_by_id(const vector<Point> &points, const int id) {
     return binary_search(points, id, 0, points.size() - 1);
 }
 
-void Point::draw(RenderWindow &window, float radius, Color color) const {
-    CircleShape shape(radius);
-    shape.setFillColor(color);
-    double dx = (this->x - radius) * 1;
-    double dy = (this->y * -1) - radius;
-    shape.setPosition(dx, dy);
-    window.draw(shape);
-}
-
 std::ostream &operator<<(std::ostream &os, const Point &point) {
     os << "(" << point.x << ", " << point.y << ")";
     return os;

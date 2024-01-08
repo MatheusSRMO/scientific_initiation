@@ -5,10 +5,8 @@
 #include <iostream>
 #include "../matrix/matrix.hpp"
 #include "../point/point.hpp"
-#include <SFML/Graphics.hpp>
 
 using namespace std;
-using namespace sf;
 
 /**
  * @brief Represents a solution for a problem.
@@ -84,8 +82,6 @@ class Solution {
         bool solution_cover_line(Matrix &matrix, int line, int column = -1);
 
         bool is_feasible(Matrix &matrix);
-
-        void draw(RenderWindow &window, vector<Point> &graph_points, double range);
         
         Solution &operator=(const Solution &s);
         bool operator==(const Solution &s) const;

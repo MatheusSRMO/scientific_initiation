@@ -94,18 +94,3 @@ void Graph::print() {
     }
     
 }
-
-void Graph::draw(RenderWindow &window, vector<Point> &points) {
-
-    for (int i = 0; i < this->V; i++) {
-        for (const auto &[to, _] : adjacency_list[i]) {
-            Vertex line[2] = {
-                Vertex(Vector2f(points[i].get_x(), points[i].get_y()*-1)),
-                Vertex(Vector2f(points[to].get_x(), points[to].get_y()*-1))
-            };
-            line[0].color = Color::Black;
-            line[1].color = Color::Black;
-            window.draw(line, 2, Lines);
-        }
-    }
-}

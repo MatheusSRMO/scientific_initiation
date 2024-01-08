@@ -4,10 +4,8 @@
 #include <vector>
 #include <iostream>
 #include "../point/point.hpp"
-#include <SFML/Graphics.hpp>
 
 using namespace std;
-using namespace sf;
 
 
 enum class GraphType {
@@ -41,7 +39,6 @@ class Graph {
         GraphType get_type() { return this->type; }
         GraphRepresentation get_representation() { return this->representation; }
 
-        void draw(RenderWindow &window, vector<Point> &points);
 
 };
 

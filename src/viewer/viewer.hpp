@@ -49,6 +49,9 @@ struct Package {
 class Viewer {
     public:
         static void run(void *package);
+        static void point_draw(RenderWindow &window, Point &point, double radius, Color color);
+        static void graph_draw(RenderWindow &window, Graph &graph, vector<Point> &points);
+        static void solution_draw(RenderWindow &window, Solution &solution, vector<Point> &graph_points, double range);
 };
 
 
