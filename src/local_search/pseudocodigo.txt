@@ -1,0 +1,34 @@
+Função busca_local(matriz_cobertura, lista_tabu, maximo_iterações, greedy):
+    melhor = greedy
+    
+    iterações_sem_melhoria = 0
+    Enquanto iterações_sem_melhoria < maximo_iterações Faça:
+        vizinhos = melhor.vizinhos()
+        melhores_vizinhos = [vizinhos[0]] // um array pois se houver empate, escolheremos aleatoriamente
+        melhor_pontuação = vizinhos[0].pontuação
+
+        Para cada vizinho em vizinhos Faça:
+            Se tabu_list.contém(vizinho) Então:
+                Continuar para o próximo vizinho
+
+            pontuação = vizinho.pontuação
+
+            Se pontuação < melhor_pontuação Então:
+                melhor_pontuação = pontuação
+                Limpar melhores_vizinhos
+                Adicionar vizinho a melhores_vizinhos
+            Senão, Se pontuação igual a melhor_pontuação Então:
+                Adicionar vizinho a melhores_vizinhos
+
+        indice = indice aleatório de melhores_vizinhos // escolhe aleatoriamente um dos melhores vizinhos
+        melhor = melhores_vizinhos[indice]
+        tabu_list.adicionar(melhor)
+
+        Se melhor.pontuação < melhor_solução_viavel.pontuação e melhor.eh_viavel Então:
+            melhor_solução_viavel = melhor
+            iterações_sem_melhoria = 0
+            Continuar para a próxima iteração
+
+        iterações_sem_melhoria++
+
+    Retornar melhor_solução_viavel

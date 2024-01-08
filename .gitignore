@@ -1,6 +1,0 @@
-**/main
-*.dot
-*.tsp
-**/*.zip
-*/venv
-./venv
