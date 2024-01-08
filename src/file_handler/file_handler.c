@@ -411,7 +411,7 @@ int **read_matrix(char *file_name, int *n, int *m) {
         printf("Error: could not open file %s\n", file_name);
         exit(1);
     }
-    fscanf(file, "%d %d", n, m);
+    fscanf(file, "%d %d", m, n);
     int **A = calloc(*n, sizeof(int*));
     for(int i = 0; i < *n; i++) {
         A[i] = calloc(*m, sizeof(int));

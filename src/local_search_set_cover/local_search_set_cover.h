@@ -10,9 +10,9 @@
 #include "../utils/utils.h"
 
 #define MAX_ITERATIONS 1e5
+#define TS_FACTOR 0.5
 
 
-bool all_covered(int **A, int m, int n, int coverage[]);
 
 int* local_search_set_cover(int **A, int m, int n);
 

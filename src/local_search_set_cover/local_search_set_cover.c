@@ -1,131 +1,143 @@
 #include "local_search_set_cover.h"
 
-// Função para verificar se todos os elementos são cobertos
-bool all_covered(int **A, int m, int n, int coverage[]) {
-    for (int i = 0; i < m; i++) {
-        bool covered = false;
-        for (int j = 0; j < n; j++) {
-            if (A[i][j] == 1 && coverage[j] == 1) {
-                covered = true;
-                break;
-            }
-        }
-        if (!covered) {
-            return false; // Se algum elemento não for coberto, retorna falso (false)
-        }
+typedef struct {
+    int size;
+    int capacity;
+    int **tabu;
+} TabuList;
+
+TabuList *tabu_list_create(int n) {
+    TabuList *tabu_list = (TabuList *)malloc(sizeof(TabuList));
+    tabu_list->size = 0;
+    tabu_list->capacity = n;
+    tabu_list->tabu = (int **)malloc(n * sizeof(int *));
+    for(int i = 0; i < n; i++) {
+        tabu_list->tabu[i] = calloc(n, sizeof(int));
     }
-    return true; // Se todos os elementos foram cobertos, retorna verdadeiro (true)
+    return tabu_list;
 }
 
-// Fitness = NrOfUncoveredElements+|C|
-double fitness(int** A, int* X, int m, int n) {
-    double cont = 0;
-    for(int i = 0; i < n; i++) {
-        cont += X[i];
+void tabu_list_destroy(TabuList *tabu_list) {
+    for(int i = 0; i < tabu_list->capacity; i++) {
+        free(tabu_list->tabu[i]);
     }
+    free(tabu_list->tabu);
+    free(tabu_list);
+}
 
-    for(int i = 0; i < m; i++) {
-        bool covered = false;
-        for(int j = 0; j < n; j++) {
-            if(A[i][j] == 1 && X[j] == 1) {
-                covered = true;
-                break;
-            }
+void tabu_list_add(TabuList *tabu_list, int *X) {
+    // add circularly
+    if(tabu_list->size == tabu_list->capacity) {
+        tabu_list->size = 0;
+    }
+    memcpy(tabu_list->tabu[tabu_list->size++], X, tabu_list->capacity * sizeof(int));
+
+}
+
+bool tabu_list_contains(TabuList *tabu_list, int *X) {
+    for (int i = 0; i < tabu_list->size; i++) {
+        if (memcmp(tabu_list->tabu[i], X, tabu_list->capacity * sizeof(int)) == 0) {
+            return true;
         }
-        cont += !covered;
     }
+    return false;
+}
 
+
+
+int get_cost(int *X, int m) {
+    int cost = 0;
+    for(int i = 0; i < m; i++) {
+        cost += X[i];
+    }
+    return cost;
+}
+
+int number_of_uncovered_elements(int **A, int *S, int m, int n) {
+    int cont = 0;
+    for(int i = 0; i < m; i++) {
+        int sum = 0;
+        for(int j = 0; j < n; j++) {
+            sum += A[i][j] * S[j];
+        }
+        if(sum == 0) cont++;
+    }
     return cont;
 }
 
-bool better(int* X1, int* X2, int** A, int m, int n) {
-    return fitness(A, X1, m, n) < fitness(A, X2, m, n);
+int fitness(int **A, int *S, int m, int n) { // Fitness = NrOfUncoveredElements + |C|
+    return get_cost(S, n) + number_of_uncovered_elements(A, S, m, n);
 }
 
-bool equal(int* X1, int* X2, int** A, int m, int n) {
-    return fitness(A, X1, m, n) == fitness(A, X2, m, n);
+bool all_elements_covered(int **A, int *S, int m, int n) {
+    return number_of_uncovered_elements(A, S, m, n) == 0;
 }
 
-bool better_or_equal(int* X1, int* X2, int** A, int m, int n) {
-    return fitness(A, X1, m, n) <= fitness(A, X2, m, n);
+bool is_feasible(int **A, int *S, int m, int n) {
+    return all_elements_covered(A, S, m, n);
 }
 
-void add_remove_set(int* X, int** A, int m, int n, int* temp, int set_idx) {
-    // Faz uma cópia de X para temp
-    memcpy(temp, X, n * sizeof(int));
-
-    // Adiciona ou remove o conjunto set_idx de temp
-    temp[set_idx] = 1 - temp[set_idx];
-}
-
-void random_perturbation(int* X, int** A, int m, int n, int* best, int* temp) {
-    // Faz uma cópia de X para temp
-    memcpy(temp, X, n * sizeof(int));
-
-    // Escolhe aleatoriamente um índice e inverte o valor
-    int rand_idx = rand() % n;
-    temp[rand_idx] = 1 - temp[rand_idx];
-
-    memcpy(best, temp, n * sizeof(int)); // Atualiza o 'melhor'
-}
-
-void combine_solutions(int* X, int* Y, int* temp, int n) {
-    // Combina as soluções X e Y (por exemplo, faz a união dos conjuntos selecionados)
-    for (int i = 0; i < n; i++) {
-        temp[i] = X[i] || Y[i];
+int **get_neighbors(int *S, int n) {
+    int **neighbors = (int **)malloc(n * sizeof(int *));
+    for(int i = 0; i < n; i++) {
+        neighbors[i] = (int *)malloc(n * sizeof(int));
+        memcpy(neighbors[i], S, n * sizeof(int));
     }
+    for(int i = 0; i < n; i++) {
+        neighbors[i][i] = 1 - neighbors[i][i];
+    }
+    return neighbors;
 }
 
-void best_neighbor(int* X, int** A, int m, int n, int* best, int* temp) {
-    // Inicializa o 'melhor' com os valores de X
-    memcpy(best, X, n * sizeof(int));
+int *get_best_neighbor(int **A, int *S, int m, int n, TabuList *tabu_list) {
+    
+}
 
-    // Cria uma cópia temporária de X
-    memcpy(temp, X, n * sizeof(int));
+/*
+ def run(self):
+    self.best_legal_solution = self.X.copy()
+    best_neighbor = self.get_best_neighbor(self.X)
+    i = 0
+    while i < 1e2*3:
+        best_neighbor = self.get_best_neighbor(best_neighbor)
+        print("fitness: ", self.fitness(best_neighbor), i)
+        if self.fitness(best_neighbor) < self.fitness(self.best_legal_solution) and self.is_feasible(best_neighbor):
+            i = 0
+            self.best_legal_solution = best_neighbor.copy()
+            continue
+        i+=1
 
-    for (int i = 0; i < n; i++) {
-        // Adiciona ou remove o conjunto i de temp
-        add_remove_set(best, A, m, n, temp, i);
-        if(better(temp, best, A, m, n)) {
-            memcpy(best, temp, n * sizeof(int));
+    return self.best_legal_solution 
+*/
+int *local_search(int **A, int *X, int m, int n) {
+    srand(time(NULL));
+    int *best_legal_solution = (int *)malloc(n * sizeof(int));
+    memcpy(best_legal_solution, X, n * sizeof(int));
+
+    TabuList *tabu_list = tabu_list_create(n);
+
+    int *best_neighbor = get_best_neighbor(A, X, m, n, tabu_list);
+    int i = 0;
+    while(i < 1e3*3) {
+        best_neighbor = get_best_neighbor(A, best_neighbor, m, n, tabu_list);
+        printf("fitness: %d, i: %d\n", fitness(A, best_neighbor, m, n), i);
+        if(fitness(A, best_neighbor, m, n) < fitness(A, best_legal_solution, m, n) && is_feasible(A, best_neighbor, m, n)) {
+            i = 0;
+            memcpy(best_legal_solution, best_neighbor, n * sizeof(int));
+            continue;
         }
-        else if(equal(temp, best, A, m, n)) {
-            memcpy(best, temp, n * sizeof(int));
-            combine_solutions(X, best, temp, n);
-        }
+        i++;
     }
+    free(best_neighbor);
+    tabu_list_destroy(tabu_list);
+    return best_legal_solution;
 }
 
 
-int* local_search(int** A, int* X, int m, int n) {
-    int* best = (int*)malloc(n * sizeof(int));
-    int* temp = (int*)malloc(n * sizeof(int));
-
-    int iterations = 0;
-
-    while (iterations < MAX_ITERATIONS) {
-        best_neighbor(X, A, m, n, best, temp);
-        // print_vector(best, n);
-
-        if (!better(best, X, A, m, n)) break;
-
-        memcpy(X, best, n * sizeof(int));
-
-        iterations++;
-    }
-
-    free(temp);
-    free(best);
-
-    return X;
-}
-
-// Função principal para encontrar a cobertura mínima
 int* local_search_set_cover(int **A, int m, int n) {
-    // Encontra a solução inicial
-    int *current_solution = greedy_set_cover(A, m, n);
+    // int *current_solution = greedy_set_cover(A, m, n);
+    int *current_solution = calloc(n, sizeof(int));
 
-    // Encontra a solução final
-    int *X = local_search(A, current_solution, m, n); // Solução final
+    int *X = local_search(A, current_solution, m, n);
     return X;
 }

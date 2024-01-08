@@ -137,7 +137,7 @@ def cont_sets(set):
 
 def execute(path):
     A, m, n = read_matrix(path)
-    return cont_sets(linear_programing(A)), n
+    return 0, (m + n, n, m)
 
 def get_dimensions(path):
     (

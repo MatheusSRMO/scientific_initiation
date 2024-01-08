@@ -31,28 +31,24 @@ int main(int argc, char const *argv[]) {
     // char* input_file_name = "data/scp/jardim_da_penha_vitoria_es_brasil.scp";
 
 
-    // // Create file handler
-    // FileHandler *file_handler = file_handler_create(input_file_name, scp);
-    // int dimension = file_handler_get_dimension(file_handler);
-    // int edges_dimension = file_handler_get_edges_dimension(file_handler);
-    // int constructions_dimension = file_handler_get_constructions_dimension(file_handler);
-    // // printf("Dimension: %d\n", dimension);
-    // // printf("Edges dimension: %d\n", edges_dimension);
-    // // printf("Constructions dimension: %d\n", constructions_dimension);
-    // Point **points_list = scp_file_nodes_to_points_list(file_handler);
-    // Point **constructions_list = scp_file_constructs_to_points_list(file_handler);
+    // Create file handler
+    FileHandler *file_handler = file_handler_create(input_file_name, scp);
+    int dimension = file_handler_get_dimension(file_handler);
+    int edges_dimension = file_handler_get_edges_dimension(file_handler);
+    int constructions_dimension = file_handler_get_constructions_dimension(file_handler);
+    // printf("Dimension: %d\n", dimension);
+    // printf("Edges dimension: %d\n", edges_dimension);
+    // printf("Constructions dimension: %d\n", constructions_dimension);
+    Point **points_list = scp_file_nodes_to_points_list(file_handler);
+    Point **constructions_list = scp_file_constructs_to_points_list(file_handler);
 
 
-    // // Set line and column dimensions
-    // int lines = constructions_dimension;
-    // int columns = dimension;
-
+    // Set line and column dimensions
+    int lines = constructions_dimension;
+    int columns = dimension;
 
     // builds coverage matrix A
-    // int **A = build_matrix_A(constructions_list, points_list, constructions_dimension, dimension, range);
-    
-    int lines, columns;
-    int **A = read_matrix(input_file_name, &lines, &columns);
+    int **A = build_matrix_A(constructions_list, points_list, constructions_dimension, dimension, range);
 
     int* solution = NULL;
     if(strcmp(method, "--greedy") == 0) {
@@ -68,30 +64,30 @@ int main(int argc, char const *argv[]) {
     printf("%d", cont_sets(solution, columns));
 
 
-    // // Generate graph and edge list
-    // Graph *graph = graph_create(dimension, adj_matrix);
-    // EdgeList *edge_list = edge_list_create(edges_dimension);
-    // file_handler_to_edge_list(file_handler, edge_list);
-    // graph_from_edge_list(graph, edge_list);
+    // Generate graph and edge list
+    Graph *graph = graph_create(dimension, adj_matrix);
+    EdgeList *edge_list = edge_list_create(edges_dimension);
+    file_handler_to_edge_list(file_handler, edge_list);
+    graph_from_edge_list(graph, edge_list);
 
 
-    // // Generate graph.dot and graph.jpg
-    // graph_to_dot_solve(graph, points_list, constructions_list, constructions_dimension, solution, columns, range, "graph.dot");
-    // system("neato -Tjpg graph.dot -o graph.jpg");
-    // remove("graph.dot"); // delete graph.dot
+    // Generate graph.dot and graph.jpg
+    graph_to_dot_solve(graph, points_list, constructions_list, constructions_dimension, solution, columns, range, "graph.dot");
+    system("neato -Tjpg graph.dot -o graph.jpg");
+    remove("graph.dot"); // delete graph.dot
 
 
-    // /* Frees Allocated Memory */
-    // edge_list_destroy(edge_list);
-    // graph_destroy(graph);
+    /* Frees Allocated Memory */
+    edge_list_destroy(edge_list);
+    graph_destroy(graph);
     for(int i = 0; i < lines; i++) {
         free(A[i]);
     }
     free(A);
     free(solution);
-    // point_list_destroy(points_list, dimension);
-    // point_list_destroy(constructions_list, constructions_dimension);
-    // file_handler_destroy(file_handler);
+    point_list_destroy(points_list, dimension);
+    point_list_destroy(constructions_list, constructions_dimension);
+    file_handler_destroy(file_handler);
     free(input_file_name);
     free(method);
     return 0;
