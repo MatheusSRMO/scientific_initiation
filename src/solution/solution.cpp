@@ -115,10 +115,8 @@ void Solution::fitness_with_cache(Matrix &matrix, Solution &old_solution, int j)
 
     for (int i = 0; i < (int)current_subset.size(); i++) {
         if(!current_subset[i]) continue;
-        // cout << "current_subset[" << i << "]: " << current_subset[i] << endl;
         
         bool old_solution_cover_line = old_solution.solution_cover_line(matrix, i);
-        // cout << "old_solution_cover_line: " << old_solution_cover_line << endl;
 
         if (current_value && !old_solution_cover_line) {
             current_fitness_score--;
