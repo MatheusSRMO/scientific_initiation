@@ -20,7 +20,7 @@ class LocalSearch {
         bool is_feasible(Solution &s);
         void get_best_neighbors(int &best_fitness, vector<Solution> &neighbors, vector<Solution> &best_neighbors);
         void select_random_best_neighbor(vector<Solution> &best_neighbors, Solution &current);
-        bool is_better_and_feasible();
+        bool is_better();
 };
 
 #endif // _LOCAL_SEARCH_H_
