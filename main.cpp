@@ -8,18 +8,19 @@
 #include "src/greedy_local_search/greedy_local_search.hpp"
 
 using namespace std;
-using namespace sf;
-
 
 
 int main() {
     /* =================== MAIN INFOS =================== */
-    const string file_path = "data/scp/jardim_da_penha_vitoria_es_brasil.scp";
+    srand48(time(NULL));
+    const string file_path = "data/scp/jardim_da_penha_vitória_es_brasil.scp";
+    const double range = 300;
+
     const int width = 800;
     const int height = 600;
-    const double range = 300;
-    const int max_iterations = 1e3;
-    const int tabu_size = 1e1;
+
+    const int max_iterations = 1e2;
+    const int tabu_size = 1e0;
 
 
     /* =================== OPEN SCP FILE =================== */
@@ -48,9 +49,9 @@ int main() {
 
 
     /* =================== VIEWER =================== */
-    Package package(name, width, height, range, &graph, &current_solution, &points, &graph_points);
-    Thread thread(&Viewer::run, &package);
-    thread.launch();
+    // Package package(name, width, height, range, &graph, &current_solution, &points, &graph_points);
+    // Thread thread(&Viewer::run, &package);
+    // thread.launch();
 
 
     /* =================== RUN LOCAL SEARCH =================== */
