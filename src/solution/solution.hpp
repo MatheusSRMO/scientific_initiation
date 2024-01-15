@@ -18,11 +18,11 @@ using namespace std;
  * and perform operations such as getting neighbors and printing the solution.
  */
 class Solution {
-    int fitness_score; // number of elements covered by the solution
-    vector<bool> V; // vector of subsets, true if subset is in the solution
-                
-    void nums(Matrix &matrix, int &num_of_elements_uncovered, int &num_of_elements_covered_by_more_than_one_subset);
+    private:
+        int fitness_score; // = cost() + num_of_elements_uncovered()
+        vector<bool> V;
 
+        void nums(Matrix &matrix, int &num_of_elements_uncovered, int &num_of_elements_covered_by_more_than_one_subset);
 
     public:
         int get_n() const { return this->V.size(); }
