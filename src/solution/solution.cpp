@@ -6,21 +6,15 @@ using namespace std;
 
 Solution::Solution() {
     this->V = vector<bool>();
-    this->n = 0;
     this->fitness_score = -1;
-    this->feasible = false;
 }
 
 
-Solution::Solution(int n, bool default_value) { // default value for default_value is false
-    this->V = vector<bool>(n, default_value); // initialize vector with n elements, all false
-    this->n = n;
+Solution::Solution(int n, bool default_value) {
+    this->V = vector<bool>(n, default_value);
     this->fitness_score = -1;
-    this->feasible = false;
 }
 
-
-// Por que é necessário um construtor de cópia? R: Porque se não tiver um construtor de cópia, o compilador vai gerar um construtor de cópia padrão, que vai copiar os atributos do objeto, mas se o objeto tiver um ponteiro, o ponteiro vai ser copiado, mas o conteúdo do ponteiro não vai ser copiado, então se o objeto original for destruído, o ponteiro do objeto copiado vai apontar para um endereço inválido.
 Solution::Solution(const Solution &s) {
     *this = s;
 }
@@ -31,17 +25,13 @@ Solution::Solution(int *V, int n) {
     for (int i = 0; i < n; i++) {
         this->V[i] = V[i] == 1;
     }
-    this->n = n;
     this->fitness_score = -1;
-    this->feasible = false;
 }
 
 
 Solution::Solution(vector<bool> V) {
     this->V = V;
-    this->n = V.size();
     this->fitness_score = -1;
-    this->feasible = false;
 }
 
 
@@ -200,9 +190,7 @@ void Solution::nums(Matrix &matrix, int &elements_uncovered, int &elements_cover
 // Sobrecarga de operadores (=)
 Solution &Solution::operator=(const Solution &s) {
     this->V = s.V;
-    this->n = s.n;
     this->fitness_score = s.fitness_score;
-    this->feasible = s.feasible;
     return *this;
 }
 

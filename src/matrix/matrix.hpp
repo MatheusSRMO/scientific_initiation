@@ -21,17 +21,11 @@ class Matrix {
         vector<vector<bool>> matrix; // matrix of subsets
         vector<vector<bool>> transpose; // transpose of the matrix
 
-        /**
-         * @brief Transposes the matrix.
-         */
-        void transpose_matrix();
-
     public:
         /**
          * @brief Constructs a new Matrix object.
          */
         Matrix();
-
 
         /**
          * @brief Constructs a new Matrix object.
