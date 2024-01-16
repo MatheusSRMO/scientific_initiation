@@ -12,14 +12,13 @@ using namespace std;
 
 int main() {
     /* =================== MAIN INFOS =================== */
-    // srand(time(NULL));
     const string file_path = "data/scp/jardim_da_penha_vitória_es_brasil.scp";
     const double range = 300;
 
     const int width = 800;
     const int height = 600;
 
-    const int max_iterations = 1e2;
+    const int max_iterations = 1e3;
     const int tabu_size = 1e1;
 
 
