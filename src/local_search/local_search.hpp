@@ -3,6 +3,7 @@
 
 #include "../solution/solution.hpp"
 #include "../tabu_list/tabu_list.hpp"
+#include "../graphic/graphic.hpp"
 
 class LocalSearch {
     Matrix A;
@@ -15,7 +16,7 @@ class LocalSearch {
     public:
         LocalSearch(Matrix &A, int max_iterations, int max_tabu_size, Solution &initial_solution);
         ~LocalSearch();
-        void run(Solution &current);
+        void run(Solution &current, Graphic &graphic);
         int fitness(Solution &s);
         bool is_feasible(Solution &s);
         void get_best_neighbors(int &best_fitness, vector<Solution> &neighbors, vector<Solution> &best_neighbors);

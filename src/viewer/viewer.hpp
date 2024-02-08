@@ -8,6 +8,7 @@
 #include "../graph/graph.hpp"
 #include "../point/point.hpp"
 #include "../solution/solution.hpp"
+#include "../graphic/graphic.hpp"
 
 using namespace std;
 using namespace sf;
@@ -18,6 +19,7 @@ struct Package {
     int width;
     int height;
     double range;
+    Graphic *graphic;
     Graph* graph;
     Solution* solution;
     vector<Point>* points;
@@ -28,6 +30,7 @@ struct Package {
         int width,
         int height,
         double range,
+        Graphic *graphic,
         Graph* graph,
         Solution* solution,
         vector<Point>* points,
@@ -37,6 +40,7 @@ struct Package {
         this->width = width;
         this->height = height;
         this->range = range;
+        this->graphic = graphic;
         this->graph = graph;
         this->solution = solution;
         this->points = points;

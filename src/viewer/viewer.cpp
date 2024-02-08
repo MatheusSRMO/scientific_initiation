@@ -6,6 +6,7 @@ void Viewer::run(void *package) {
     int width = p->width;
     int height = p->height;
     double range = p->range;
+    Graphic& graphic = *p->graphic;
     Graph& graph = *p->graph;
     Solution& res = *p->solution;
     vector<Point>& points = *p->points;
@@ -100,6 +101,7 @@ void Viewer::run(void *package) {
 
 
         /* ===================== DESENHA FORMAS ===================== */
+        graphic.draw(window);
         for (Point &p : points) {
             point_draw(window, p, 3, Color::Red);
         }

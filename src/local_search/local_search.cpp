@@ -1,6 +1,7 @@
 #include "local_search.hpp"
 
 #include <iostream>
+#include <random>
 
 using namespace std;
 
@@ -13,7 +14,7 @@ LocalSearch::~LocalSearch() {
 }
 
 // Complexity: O(i * n² * m), where i is the number of iterations, n is the number of columns and m is the number of rows
-void LocalSearch::run(Solution &current) {
+void LocalSearch::run(Solution &current, Graphic &graphic) {
     int iterations_without_improvement = 0;
 
     while (iterations_without_improvement < this->max_iterations) {
@@ -31,9 +32,10 @@ void LocalSearch::run(Solution &current) {
         this->select_random_best_neighbor(best_neighbors, current);
 
         current = this->best_solution;
+        graphic.update(this->best_solution.fitness(this->A)); // Aqui é onde atualiza o gráfico
 
         // Se o vizinho escolhido for melhor que a melhor solução e for viável, atualiza a melhor solução
-        if (this->is_better()) {
+        if (this->is_better()) {;
             this->best_legal_solution = this->best_solution;
             iterations_without_improvement = 0;
             continue;
@@ -77,8 +79,15 @@ void LocalSearch::get_best_neighbors(int &best_fitness, vector<Solution> &neighb
 
 void LocalSearch::select_random_best_neighbor(vector<Solution> &best_neighbors, Solution &current) {
     // Escolhe um vizinho aleatorio entre os melhores vizinhos
-    int index = best_neighbors.size() > 1 ? rand() % best_neighbors.size() : 0;
-    this->best_solution = best_neighbors[index];
+    // int index = best_neighbors.size() > 1 ? rand() % best_neighbors.size() : 0;
+    // this->best_solution = best_neighbors[index];
+
+    // Nome da biblioteca de random do c++: <random>
+    // seleciona um vizinho aleatorio entre os melhores vizinhos com essa biblioteca
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<> dis(0, best_neighbors.size()-1);
+    this->best_solution = best_neighbors[dis(gen)];
 
     // Adiciona o vizinho escolhido a lista tabu
     this->tabu_list.add(this->best_solution);

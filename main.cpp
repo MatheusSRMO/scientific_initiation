@@ -1,5 +1,6 @@
 #include <iostream>
 #include "src/graph/graph.hpp"
+#include "src/graphic/graphic.hpp"
 #include "src/point/point.hpp"
 #include "src/matrix/matrix.hpp"
 #include "src/viewer/viewer.hpp"
@@ -10,22 +11,21 @@
 using namespace std;
 
 
+#define WIDTH 800
+#define HEIGHT 600
+#define RANGE 300
+#define MAX_ITERATIONS 1e4
+#define TABU_SIZE 1e1
+
 int main() {
     /* =================== MAIN INFOS =================== */
     const string file_path = "data/scp/jardim_da_penha_vitória_es_brasil.scp";
-    const double range = 300;
-
-    const int width = 800;
-    const int height = 600;
-
-    const int max_iterations = 1e3;
-    const int tabu_size = 1e1;
 
 
     /* =================== OPEN SCP FILE =================== */
     ScpFileReader scp_file_reader(file_path);
     scp_file_reader.read_file();
-    scp_file_reader.calculate_coverage_matrix(range);
+    scp_file_reader.calculate_coverage_matrix(RANGE);
 
 
     /* =================== GET GRAPH AND CONSTRUCTION POINTS =================== */
@@ -48,14 +48,15 @@ int main() {
 
 
     /* =================== VIEWER =================== */
-    // Package package(name, width, height, range, &graph, &current_solution, &points, &graph_points);
-    // Thread thread(&Viewer::run, &package);
-    // thread.launch();
+    Graphic graphic(0, 0, 2000, 800);
+    Package package(name, WIDTH, HEIGHT, RANGE, &graphic, &graph, &current_solution, &points, &graph_points);
+    Thread thread(&Viewer::run, &package);
+    thread.launch();
 
 
     /* =================== RUN LOCAL SEARCH =================== */
-    LocalSearch local_search(matrix, max_iterations, tabu_size, greedy_solution);
-    local_search.run(current_solution);
+    LocalSearch local_search(matrix, MAX_ITERATIONS, TABU_SIZE, greedy_solution);
+    local_search.run(current_solution, graphic);
 
 
     /* =================== SHOW RESULT =================== */
