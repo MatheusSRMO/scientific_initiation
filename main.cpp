@@ -13,7 +13,7 @@ using namespace std;
 
 #define WIDTH 800
 #define HEIGHT 600
-#define RANGE 300
+#define RANGE 150
 #define MAX_ITERATIONS 1e4
 #define TABU_SIZE 1e1
 
