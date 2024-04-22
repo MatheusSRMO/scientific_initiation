@@ -42,7 +42,6 @@ void LocalSearch::run(Solution &current, Graphic &graphic) {
         }
         iterations_without_improvement++;
     }
-
     current = this->best_legal_solution;
 }
 
