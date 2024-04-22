@@ -4,6 +4,7 @@
 #include "../solution/solution.hpp"
 #include "../tabu_list/tabu_list.hpp"
 #include "../graphic/graphic.hpp"
+#include "../report_manager/report_manager.hpp"
 
 class LocalSearch {
     Matrix A;
