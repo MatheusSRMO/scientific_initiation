@@ -15,14 +15,13 @@ LocalSearch::~LocalSearch() {
 
 // Complexity: O(i * n² * m), where i is the number of iterations, n is the number of columns and m is the number of rows
 void LocalSearch::run(Solution &current, Graphic &graphic) {
-    ReportManager report_manager("report.txt");
-
     int iterations_without_improvement = 0;
 
     while (iterations_without_improvement < this->max_iterations) {
-        cout << 
-        "Fitness: " << this->best_solution.fitness(this->A) << 
-        "\tIteration: " << iterations_without_improvement << endl;
+        this->best_solution.fitness(this->A);
+        // cout << 
+        // "Fitness: " << this->best_solution.fitness(this->A) << 
+        // "\tIteration: " << iterations_without_improvement << endl;
         
         vector<Solution> neighbors = this->best_solution.get_neighbors(this->A);
         vector<Solution> best_neighbors = vector<Solution>();
@@ -35,7 +34,6 @@ void LocalSearch::run(Solution &current, Graphic &graphic) {
 
         current = this->best_solution;
         graphic.update(this->best_solution.fitness(this->A)); // Aqui é onde atualiza o gráfico
-        report_manager.add_partial_solution(this->best_solution);
 
         // Se o vizinho escolhido for melhor que a melhor solução e for viável, atualiza a melhor solução
         if (this->is_better()) {;
@@ -46,7 +44,6 @@ void LocalSearch::run(Solution &current, Graphic &graphic) {
         iterations_without_improvement++;
     }
     current = this->best_legal_solution;
-    report_manager.write_report();
 }
 
 int LocalSearch::fitness(Solution &s) {

@@ -18,6 +18,21 @@ class FileHandler(object):
 		self.f.close()
 		return self.A, self.c
 
+	def save_to_file(self, filename):
+		"""
+			Format:
+			m n
+			c1 c2 ... cn
+			n1 n2 ... nk
+			...
+			n1 n2 ... nk
+  		"""
+		with open(filename, 'w') as f:
+			f.write(str(self.m) + " " + str(self.n) + "\n")
+			for i in range(self.m):
+				f.write(" ".join(map(str, map(int, self.A[i]))) + "\n")
+			
+
 	def __init_matrix(self):
 		m, n = self.f.readline().split()
 		self.m, self.n = int(m), int(n)

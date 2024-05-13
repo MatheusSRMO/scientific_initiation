@@ -9,6 +9,7 @@
 
 
 #include "../solution/solution.hpp"
+#include "../scp_file_reader/scp_file_reader.hpp"
 
 using namespace std;
 
@@ -48,6 +49,8 @@ class ReportManager {
          * added to the report manager.
          */
         void write_report();
+
+        void write_cvrp_intance(ScpFileReader&, string);
 
 };
 

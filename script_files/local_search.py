@@ -1,5 +1,5 @@
 import numpy as np
-import random
+import os
 from search import AbstractSearch
 from file_handler import FileHandler
 
@@ -111,15 +111,8 @@ class LocalSearch(AbstractSearch):
 
 
 if __name__ == "__main__":
-    file_reader = FileHandler("OR-Library/scp41.txt")
+    # pega o arquivo de entrada do terminal
+    filename = os.sys.argv[1]
+    file_reader = FileHandler(f"../data/OR-Library/{filename}")
     A, c = file_reader.process()
-    # A = np.array([[1, 0, 1, 0],
-    #               [0, 1, 1, 0],
-    #               [0, 0, 1, 1],
-    #               [1, 0, 0, 1]])
-    print("A: ", A)
-    local_search = LocalSearch(A)
-    # local_search.X = local_search.greedy_set_cover()
-
-    solution = local_search.run()
-    print("solution: ", solution, "fitness: ", local_search.fitness(solution))
+    file_reader.save_to_file(f"../data/OR-Library-Custom/{filename}")

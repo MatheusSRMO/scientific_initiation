@@ -1,4 +1,7 @@
 *.o
 main
+*.txt
+*.gnu
+*.png
 venv
 cache
