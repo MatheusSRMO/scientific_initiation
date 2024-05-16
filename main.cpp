@@ -25,7 +25,7 @@ using namespace std;
 #define TABU_SIZE 1e1
 
 void execute_type_1(string path);
-void execute_type_2(string path);
+void execute_type_2(string path, int *best_fitness);
 void execute_type_3(string path, int range = RANGE);
 
 // exemplo de execução: ./main data/OR-Library-Custom/scp41.txt 
@@ -46,7 +46,7 @@ int main(int argc, char* argv[]) {
     }
 
     if(strcmp(argv[1], "2") == 0) {
-        execute_type_2(argv[2]);
+        execute_type_2(argv[2], nullptr);
         return 0;
     }
 
@@ -65,16 +65,19 @@ int main(int argc, char* argv[]) {
 }
 
 void execute_type_1(string path) {
+    const int num_iterations = 10;
     for (const auto& entry : filesystem::directory_iterator(path)) {
         if (filesystem::is_regular_file(entry.path())) {
+            int best_fitness = 999999999;
             std::cout << entry.path().filename() << std::endl;
-            execute_type_2(entry.path());
+            for (int i = 0; i < num_iterations; i++)
+                execute_type_2(entry.path(), &best_fitness);
         }
     }
 
 }
 
-void execute_type_2(string path) {
+void execute_type_2(string path, int *best_fitness) {
     /* =================== READ COVERAGE MATRIX FROM FILE =================== */
     Matrix matrix = Matrix::read_from_file(path);
     
@@ -85,15 +88,24 @@ void execute_type_2(string path) {
     Solution current_solution = greedy_solution;
     Graphic graphic(0, 0, 0, 0);
 
+    // get the file name from path
+    string name = path.substr(path.find_last_of("/\\") + 1);
+    ReportManager report_manager(name);
+
     /* =================== RUN LOCAL SEARCH =================== */
     LocalSearch local_search(matrix, MAX_ITERATIONS, TABU_SIZE, greedy_solution);
-    local_search.run(current_solution, graphic);
+    local_search.run(current_solution, graphic, report_manager);
 
 
     /* =================== SHOW RESULT =================== */
     cout << "greedy_solution.fitness_score: " << greedy_solution.fitness(matrix) << endl;
     cout << "current_solution.fitness_score: " << current_solution.fitness(matrix) << endl;
-    
+
+    if (best_fitness != nullptr && current_solution.fitness(matrix) < *best_fitness) {
+        *best_fitness = current_solution.fitness(matrix);
+        cout << "best_fitness: " << *best_fitness << endl;
+        report_manager.write_report();
+    }
 }
 
 void execute_type_3(string path, int range) {
@@ -121,17 +133,17 @@ void execute_type_3(string path, int range) {
     /* =================== VIEWER =================== */
     Graphic graphic(0, 0, 2000, 800);
     Package package(name, WIDTH, HEIGHT, range, &graphic, &graph, &current_solution, &points, &graph_points);
-    Thread thread(&Viewer::run, &package);
-    thread.launch();
+    // Thread thread(&Viewer::run, &package);
+    // thread.launch();
 
     /* =================== RUN LOCAL SEARCH =================== */
     LocalSearch local_search(matrix, MAX_ITERATIONS, TABU_SIZE, greedy_solution);
-    local_search.run(current_solution, graphic);
+    local_search.run(current_solution, graphic, report_manager);
 
     /* =================== SHOW RESULT =================== */
     cout << "greedy_solution.fitness_score: " << greedy_solution.fitness(matrix) << endl;
     cout << "current_solution.fitness_score: " << current_solution.fitness(matrix) << endl;
 
     /* =================== WRITE REPORT =================== */
-    report_manager.write_cvrp_intance(scp_file_reader, "report_instance.txt");
+    report_manager.write_cvrp_intance(scp_file_reader, "report_instance.txt", current_solution);
 }

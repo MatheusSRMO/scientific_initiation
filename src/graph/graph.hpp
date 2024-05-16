@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <iostream>
+#include <set>
 #include "../point/point.hpp"
 
 using namespace std;
@@ -39,7 +40,8 @@ class Graph {
         GraphType get_type() { return this->type; }
         GraphRepresentation get_representation() { return this->representation; }
 
-
+        double get_edge_weight(int from, int to);
+        double get_min_distance(int from, int to);
 };
 
 #endif // GRAPH_HPP

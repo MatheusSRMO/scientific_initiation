@@ -40,7 +40,7 @@ class ReportManager {
          * 
          * @param solution The partial solution to be added.
          */
-        void add_partial_solution(Solution solution);
+        void add_partial_solution(Solution &solution, int iteration);
 
         /**
          * @brief Writes the report to the file.
@@ -50,7 +50,7 @@ class ReportManager {
          */
         void write_report();
 
-        void write_cvrp_intance(ScpFileReader&, string);
+        void write_cvrp_intance(ScpFileReader&, string, Solution&);
 
 };
 

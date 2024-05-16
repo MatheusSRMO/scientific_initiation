@@ -14,10 +14,14 @@ LocalSearch::~LocalSearch() {
 }
 
 // Complexity: O(i * n² * m), where i is the number of iterations, n is the number of columns and m is the number of rows
-void LocalSearch::run(Solution &current, Graphic &graphic) {
+void LocalSearch::run(Solution &current, Graphic &graphic, ReportManager &report_manager) {
+    this->best_solution.fitness(this->A);
+    int iteration = 0;
+    report_manager.add_partial_solution(this->best_solution, iteration);
+    
     int iterations_without_improvement = 0;
-
     while (iterations_without_improvement < this->max_iterations) {
+        iteration++;
         this->best_solution.fitness(this->A);
         // cout << 
         // "Fitness: " << this->best_solution.fitness(this->A) << 
@@ -39,6 +43,7 @@ void LocalSearch::run(Solution &current, Graphic &graphic) {
         if (this->is_better()) {;
             this->best_legal_solution = this->best_solution;
             iterations_without_improvement = 0;
+            report_manager.add_partial_solution(this->best_solution, iteration);
             continue;
         }
         iterations_without_improvement++;

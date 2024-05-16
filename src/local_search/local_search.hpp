@@ -17,7 +17,7 @@ class LocalSearch {
     public:
         LocalSearch(Matrix &A, int max_iterations, int max_tabu_size, Solution &initial_solution);
         ~LocalSearch();
-        void run(Solution &current, Graphic &graphic);
+        void run(Solution &current, Graphic &graphic, ReportManager &report_manager);
         int fitness(Solution &s);
         bool is_feasible(Solution &s);
         void get_best_neighbors(int &best_fitness, vector<Solution> &neighbors, vector<Solution> &best_neighbors);

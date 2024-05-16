@@ -94,3 +94,43 @@ void Graph::print() {
     }
     
 }
+
+double Graph::get_edge_weight(int from, int to) {
+    if (representation == GraphRepresentation::ADJACENCY_MATRIX) {
+        return adjacency_matrix[from][to];
+    }
+
+    for (const auto &[node, weight] : adjacency_list[from]) {
+        if (node == to) {
+            return weight;
+        }
+    }
+    return 0;
+}
+
+// using Dijkstra's algorithm, using only graph's adjacency list
+double Graph::get_min_distance(int from, int to) {
+    if(from == to) {
+        return 0;
+    }
+
+    vector<double> dist(this->V, numeric_limits<double>::max());
+    dist[from] = 0;
+    set<pair<double, int>> pq;
+    pq.insert({0, from});
+
+    while (!pq.empty()) {
+        auto [d, node] = *pq.begin();
+        pq.erase(pq.begin());
+
+        for (const auto &[neighbor, weight] : adjacency_list[node]) {
+            if (dist[neighbor] > dist[node] + weight) {
+                pq.erase({dist[neighbor], neighbor});
+                dist[neighbor] = dist[node] + weight;
+                pq.insert({dist[neighbor], neighbor});
+            }
+        }
+    }
+
+    return dist[to];
+}
