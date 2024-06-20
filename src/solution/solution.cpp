@@ -139,15 +139,31 @@ bool Solution::is_feasible(Matrix &matrix) {
 
 
 // Complexity: O(n), where n is the number of elements
-vector<Solution> Solution::get_neighbors(Matrix &matrix) {
-    vector<Solution> neighbors((int)this->V.size());
+vector<Solution> Solution::get_neighbors(Matrix &matrix, int upper_bound) {
+    vector<Solution> neighbors;
     for (int i = 0; i < (int)this->V.size(); i++) {
         Solution neighbor(*this); // copy constructor
         neighbor.set(i, !neighbor.get(i)); // flip bit
         neighbor.fitness_with_cache(matrix, *this, i);
 
-        neighbors[i] = neighbor;
+        // // se foi um movimento de REMOVE_SET, adiciona o vizinho
+        // if (this->get(i) && !neighbor.get(i)) {
+        //     neighbors.push_back(neighbor);
+        //     continue;
+        // }
+
+        // se foi um movimento de ADD_SET, adiciona o vizinho se o número de conjuntos na solução atual for menor que upperbound - 1
+        
+        //the move ADD SET can be applied in the current solution only if the number of sets in the current solution is less than upperbound − 1.
+
+        // cout << "neighbor.cost(): " << neighbor.cost() << " upper_bound: " << upper_bound << endl;
+
+        // if (neighbor.cost() < upper_bound -1) {
+            neighbors.push_back(neighbor);
+        // }
     }
+
+    // cout << "neighbors.size(): " << neighbors.size() << endl;
     return neighbors;
 }
 

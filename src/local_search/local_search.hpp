@@ -13,6 +13,7 @@ class LocalSearch {
     Solution best_solution;
     Solution best_legal_solution;
     int max_iterations;
+    int upper_bound;
 
     public:
         LocalSearch(Matrix &A, int max_iterations, int max_tabu_size, Solution &initial_solution);

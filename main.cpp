@@ -1,4 +1,9 @@
 #include <iostream>
+#include <filesystem>
+#include <string>
+#include <chrono> // Adicionada para medir o tempo
+#include <cstring> // for strcmp
+
 #include "src/graph/graph.hpp"
 #include "src/graphic/graphic.hpp"
 #include "src/point/point.hpp"
@@ -8,15 +13,9 @@
 #include "src/scp_file_reader/scp_file_reader.hpp"
 #include "src/greedy_local_search/greedy_local_search.hpp"
 #include "src/report_manager/report_manager.hpp"
-#include <cstring> // for strcmp
-#include <filesystem>
-
-#include <iostream>
-#include <filesystem>
-#include <string>
 
 using namespace std;
-
+using namespace std::chrono;
 
 #define WIDTH 800
 #define HEIGHT 600
@@ -70,11 +69,18 @@ void execute_type_1(string path) {
         if (filesystem::is_regular_file(entry.path())) {
             int best_fitness = 999999999;
             std::cout << entry.path().filename() << std::endl;
-            for (int i = 0; i < num_iterations; i++)
+            for (int i = 0; i < num_iterations; i++) {
+                auto start = high_resolution_clock::now(); // Início da medição do tempo
+
                 execute_type_2(entry.path(), &best_fitness);
+
+                auto end = high_resolution_clock::now(); // Fim da medição do tempo
+                auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+                std::cout << "Iteration " << i + 1 << " time: " << duration << " ms" << std::endl;
+            }
+            std::cout << "Best fitness for " << entry.path().filename() << ": " << best_fitness << std::endl;
         }
     }
-
 }
 
 void execute_type_2(string path, int *best_fitness) {
@@ -83,6 +89,7 @@ void execute_type_2(string path, int *best_fitness) {
     
     /* =================== RUN GREEDY LOCAL SEARCH =================== */
     Solution greedy_solution = GreedySetCover::run(matrix);
+    // Solution greedy_solution = Solution(matrix.get_n(), 1);
 
     /* =================== CURRENT SOLUTION =================== */
     Solution current_solution = greedy_solution;
@@ -96,10 +103,9 @@ void execute_type_2(string path, int *best_fitness) {
     LocalSearch local_search(matrix, MAX_ITERATIONS, TABU_SIZE, greedy_solution);
     local_search.run(current_solution, graphic, report_manager);
 
-
     /* =================== SHOW RESULT =================== */
-    cout << "greedy_solution.fitness_score: " << greedy_solution.fitness(matrix) << endl;
-    cout << "current_solution.fitness_score: " << current_solution.fitness(matrix) << endl;
+    // cout << "greedy_solution.fitness_score: " << greedy_solution.fitness(matrix) << endl;
+    // cout << "current_solution.fitness_score: " << current_solution.fitness(matrix) << endl;
 
     if (best_fitness != nullptr && current_solution.fitness(matrix) < *best_fitness) {
         *best_fitness = current_solution.fitness(matrix);
@@ -133,8 +139,8 @@ void execute_type_3(string path, int range) {
     /* =================== VIEWER =================== */
     Graphic graphic(0, 0, 2000, 800);
     Package package(name, WIDTH, HEIGHT, range, &graphic, &graph, &current_solution, &points, &graph_points);
-    // Thread thread(&Viewer::run, &package);
-    // thread.launch();
+    Thread thread(&Viewer::run, &package);
+    thread.launch();
 
     /* =================== RUN LOCAL SEARCH =================== */
     LocalSearch local_search(matrix, MAX_ITERATIONS, TABU_SIZE, greedy_solution);

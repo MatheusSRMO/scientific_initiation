@@ -26,7 +26,7 @@ class Solution {
 
     public:
         int get_n() const { return this->V.size(); }
-        vector<Solution> get_neighbors(Matrix &matrix);
+        vector<Solution> get_neighbors(Matrix &matrix, int upper_bound);
 
         Solution();
 

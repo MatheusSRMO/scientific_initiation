@@ -4,12 +4,13 @@ using namespace std;
 
 TabuList::TabuList() {
     this->max_size = 0;
-    this->tabu_list = vector<Solution>();
+    this->tabu_list = vector<Move>();
 }
 
 TabuList::TabuList(int max_size) {
     this->max_size = max_size;
-    this->tabu_list = vector<Solution>(max_size);
+    // this->tabu_list = vector<Move>(max_size, Move(-2, false, false));
+    this->tabu_list = vector<Move>();
 }
 
 TabuList::~TabuList() {
@@ -17,7 +18,8 @@ TabuList::~TabuList() {
 }
 
 // Complexity: O(1)
-void TabuList::add(Solution &s) {
+void TabuList::add(Move &s) {
+    // if(s.)
     this->tabu_list.push_back(s);
     if ((int)this->tabu_list.size() > this->max_size) {
         this->tabu_list.erase(this->tabu_list.begin()); // remove first element and shift the rest
@@ -25,7 +27,7 @@ void TabuList::add(Solution &s) {
 }
 
 // Complexity: O(n), where n is the number of elements
-bool TabuList::contains(Solution &s) {
+bool TabuList::contains(Move &s) {
     for (int i = 0; i < (int)this->tabu_list.size(); i++)
         if (this->tabu_list[i] == s)
             return true;
@@ -34,10 +36,10 @@ bool TabuList::contains(Solution &s) {
 
 // Complexity: O(n), where n is the number of elements
 void TabuList::print() {
-    cout << "Tabu list: ";
+    cout << "Tabu list: \n";
     for (int i = 0; i < (int)this->tabu_list.size(); i++) {
-        this->tabu_list[i].print();
         cout << " ";
+        this->tabu_list[i].print();
     }
     cout << endl;
 }
